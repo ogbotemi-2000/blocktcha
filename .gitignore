@@ -1,3 +1,15 @@
+# Needless but kept scripts
+server.js
+
+
+#Local Workspace files
+.soroban
+blockchain
+completion.sh
+*.txt
+
+
+
 # Logs
 logs
 *.log

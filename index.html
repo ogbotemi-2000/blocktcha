@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blocktcha Widget</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width:device-width;initial-scale: 1;">
+        <link rel="stylesheet" href="css/tailwind.min.css">
+        <link rel="stylesheet" href="css/all.min.css">
+        <link rel="stylesheet" href="css/page.css">
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js'></script>
+        <style>
+          iframe#widget {
+            height: max-content;
+          }
+        </style>
+    </head>
+    <body>
+        <main>
+            <section class="text-center m-auto p-2 border-2">
+                <i class="inline-block fa fa-bong text-5xl"></i>
+                <br>
+                <iframe id="widget"  src="./widget.html" class="p-5 overflow-hidden w-96 inline-block border-2 rounded-xl relative"></iframe>
+            </section>
+        </main>
+
+        <script>
+            window.freighterApi.isConnected().then(function() {
+              console.log("::FREIGHTER::", arguments)
+          })
+        </script>
+    </body>
+</html>
