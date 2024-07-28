@@ -4,7 +4,7 @@ server.js
 
 #Local Workspace files
 .soroban
-blockchain
+blockchain/target
 completion.sh
 *.txt
 
@@ -140,3 +140,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.vercel
