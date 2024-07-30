@@ -6,3 +6,8 @@ import {$} from 'execa';
     console.log("::OUT::", version)
 });
 // console.log(name);
+module.exports = async function(request, response) {
+  
+  const rawBody = await request.text()
+  return response.json({ rawBody, body: request.body})
+}
