@@ -22,7 +22,7 @@ impl Contract {
         let account : Option<AccountData> = env.storage().persistent().get(&addr);
         match &account {
           Some(_ac) =>{
-
+            
           }
           None =>{
             env.storage().persistent().set(&addr, &AccountData {

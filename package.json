@@ -5,14 +5,19 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@stellar/stellar-sdk": "^12.1.0",
-    "eventsource": "^2.0.2",
-    "execa": "^9.1.0"
+    "eventsource": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "terser-webpack-plugin": "^5.3.10",
+    "webpack": "^5.93.0"
   }
 }

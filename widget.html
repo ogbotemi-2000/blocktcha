@@ -1,92 +1,298 @@
 <!DOCTYPE html>
-<html>
+<html class="overflow-hidden">
     <head>
         <title>Widget via Iframe</title>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="css/tailwind.min.css">
         <link rel="stylesheet" href="css/all.min.css">
         <link rel="stylesheet" href="css/page.css">
         <script src="js/ripples.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js'></script>
+        <script src="js/utils.js"></script>
+        <style>
+          .shadowed:active > div {
+            margin: 0
+          }
+          form.loading .opacity-0 {
+            opacity: 1;
+          }
+          form.loading input {
+            border: 0;
+            border-radius: inherit;
+            background: white;
+          }
+.dots-bars-10 {
+  width: 70px;
+  height: 30px;
+  overflow: hidden;
+}
+.dots-bars-10::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius:50%;
+  inset:0;
+  margin:auto; 
+  background: currentColor;
+  transform-origin: bottom;
+  animation: db10-1 3s infinite;
+}
+.dots-bars-10::after {
+  content: "";
+  position: absolute;
+  width:8px;
+  height:14px;
+  bottom:calc(50% - 4px);
+  background: currentColor;
+  animation: db10-2 3s infinite;
+}
+
+@keyframes db10-1 {
+ 0%,
+ 10% {transform:translate(0)     scale(1)  ;box-shadow: 60px 0 ,60px 0}
+ 20%,
+ 40% {transform:translate(20px)  scale(1)  ;box-shadow: 60px 0 ,60px 0}
+ 48% {transform:translate(20px)  scale(1)  ;box-shadow: 8px  0 ,60px 0}
+ 50% {transform:translate(20px)  scale(1.5);box-shadow: 0    0 ,60px 0}
+ 58% {transform:translate(20px)  scale(1.5);box-shadow: 0    0 ,8px  0}
+ 60%,
+ 70% {transform:translate(20px)  scale(2)  ;box-shadow: 0    0 ,0    0}
+
+ 85% {transform:translate(-50px) scale(2)  ;box-shadow: 0    0 ,0    0}
+ 87% {transform:translate(-50px) scale(1)  ;box-shadow: 0    0 ,0    0}
+ 100%{transform:translate(0)     scale(1)  ;box-shadow: 0    0 ,0    0}
+}
+
+@keyframes db10-2 {
+ 20%,70% {left:50%}
+ 0%,10%,85%,100% {left:-25px}
+}
+        </style>
     </head>
     <body>
-
-        <section class="inline-block relative p-5">
-          <section class="show relative tooltip no-hover no-focus no-focus-within -slide-y" id="app">
-            <form target="xhr" onsubmit="return false;" method="POST" action="/api/confirm">
-              <label class="relative inline-block">
-                  <i class="absolute text-5xl pointer-events-none right-0 text-gray-200 0 fa fa-key"></i>
-                  <p class="text-sm inline-block font-semibold relative">Public key: starts with `G` and is 56 characters long</p>
-                  <input name="pid" class="text-sm bg-transparent relative w-full p-2 placeholder-gray-400 outline-none border-b-2 border-gray-400" placeholder="If already copied, we'll try to paste it when you type" maxlength="56">
-              </label>
-              <button class="hover:bg-purple-100 mt-3 relative rounded-full p-0">
-                  <div class="absolute h-full w-full rounded-inherit bg-gray-700 m-1"></div>
-                  <div class="ripple relative p-2 px-3 rounded-inherit border-2 border-gray-700 bg-white">submit</div>
-              </button>
-          </form>
-
-        </section>
-        <aside id="alt" class="rounded-lg to-white inset-0 absolute backdrop-filter backdrop-blur-sm tooltip no-hover no-focus no-focus-within slide-y">
-          <aside class="rounded-xl bg-gradient-to-r from-purple-500 via-purple-500 to-green-400 opacity-40 absolute inset-0 pointer-events-none z-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0" width="100%" height="100%">
-              <filter id="noise" x="0" y="0">
-              <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="1" stitchTiles="stitch"></feTurbulence>
-              <feBlend mode="screen"></feBlend>
-              </filter>
-              <rect width="100%" height="100%" filter="url(#noise)" opacity="0.9"></rect>
-            </svg></aside>
-            <section class="w-2/3 m-auto h-auto mt-8"><h3 class="font-fredoka">Freighter wallet detected</h3><hr class="border-current"><p class="mt-1.5 text-sm relative z-1">This overlay disappears when you are done with your transaction in the wallet extension</p></section>
-          <div class="text-right pr-10">
-                <button class="p-1 rounded-full relative">
-                <div class="absolute border-r-0 border-2 border-current inset-0 right-1/2 rounded-l-full mr-0.5"></div>
-                <div class="absolute border-l-0 border-2 border-current inset-0 left-1/2 rounded-r-full ml-0.5"></div>
-                <div class="px-4 relative p-2 hover:bg-purple-700 hover:text-white duration-300 ease-out ripple rounded-inherit">
-                  <i class="fa fa-wallet mr-2"></i> open wallet</div></button>
+      <div class="sm:absolute pb-5 cursor-move"><div class="h-2 bg-gray-400 rounded-full mx-24 sm:hidden"></div></div>
+      <a class="mb-1.5 text-center text-xs block" href="javascript:void(0)">↗ authentication by <span class="font-bold inline-block border-r border-b border-current p-1 rounded-br">blocktcha</span> ↗</a>
+      <h3 class="mx-7 text-gray-600 text-center">Verify you're human through crypto micropayments</h3>
+      
+      <aside class="absolute left-0 tooltip no-hover no-focus no-focus-within slide show text-center right-0 mt-3"><div class="inline-block dots-bars-10 relative"></div></aside>
+      <section class="z-1 inline-block relative p-5 pt-2 tooltip no-hover no-focus no-focus-within -slide">
+        <section class="relative tooltip no-hover no-focus no-focus-within p-4 -slide-y show" id="app">
+            <section class="absolute inset-4 tooltip no-focus-within no-hover no-focus -slide show">
+                <div class="relative duration-300 ease-out">
+                    <div class="rounded-tl-lg absolute h-3/4 px-4 border-t border-l border-gray-700 -m-1"></div>
+                    <div class="rounded-br-lg absolute h-3/4 px-4 border-b border-r border-gray-700 right-0 bottom-0 -m-1"></div>
+                    <button data-ripple-scale="0.3" data-ripple-opacity="0.2" class="text-purple-800 ripple rounded-3xl truncate w-full p-2 border-gray-500 relative" onclick="if(!byUserAgent(event)) return; let cls = this.parentNode.classList;[0,1].forEach((e, i)=>setTimeout(_=>cls.toggle('mx-10'), i*100)), copyTextToClipboard(this.textContent)==='copied'&&slice(Abbr.to(this, ['pN', 'nES', 'lEC', 'cN'])).forEach((e,i)=>e.classList[i?'remove':'add']('opacity-0'))">
+                      <img class="w-6 inline-block align-middle pointer-events-none mr-1.5" src="data:image/svg+xml;charset=utf-8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 448 448&quot; fill=&quot;hsl(326,58%,52%)&quot;><rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;384&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;64&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;320&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;128&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;256&quot; y=&quot;0&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;64&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;320&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;128&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;256&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;64&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;128&quot; y=&quot;128&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;256&quot; y=&quot;128&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;0&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;384&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;64&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;320&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;192&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;128&quot; y=&quot;256&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;256&quot; y=&quot;256&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;64&quot; y=&quot;320&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;320&quot; y=&quot;320&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;320&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;192&quot; y=&quot;320&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;128&quot; y=&quot;384&quot; width=&quot;64&quot; height=&quot;64&quot;/><rect x=&quot;256&quot; y=&quot;384&quot; width=&quot;64&quot; height=&quot;64&quot;/></svg>">
+                      GCRORZZNEUQJCN4TEE5SDNL7YTRMVEFOKS643CGLMGHTY4HMADYBJDFP
+                    </button>
                 </div>
-              </aside>
+                <i class="text-sm inline-block"><i class="fa fa-exclamation-circle mr-1"></i>
+                <span class="relative"><span class="duration-500 ease-out">click on the address above to copy it</span><span class="absolute left-0 duration-500 ease-out opacity-0">copied address to clipboard</span></span>
+                </i>
+                <div class="mt-5 text-sm leading-6">
+                    You will be prompted to send a small amount of <a class="font-mono border-b underline">XLM(Stellar Lumens) ↗</a> to the wallet address above within a timeframe
+                </div>
+                <div class="text-right mt-3 mb-1.5">
+                  <button class="shadowed p-0 relative rounded-full" onclick="let ch; if(byUserAgent(event)) !toForm.called&&toForm(), (ch=slice(window['app'].children)).forEach((e, i)=>e.classList[i?'add':'remove']('show')), setTimeout(_=>ch[1].address.focus(), 400)">
+                    <div class="absolute h-full w-full duration-500 ease-out rounded-inherit bg-gray-600 m-1 mt-1.5"></div>
+                    <div class="ripple relative ripple relative hover:bg-purple-100 bg-purple-300 p-3 px-5 rounded-inherit">
+                      proceed to verify <i class="fa fa-arrow-right"></i>
+                    </div>
+                  </button>
+                </div>
+                <div class='tooltip no-hover no-focus -slide text-sm text-gray-600 top-full -m-4 absolute' id="seeId">
+                  <svg class="w-12 inline-block align-middle" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                    <use xlink:href="#freighter"></use>
+                  </svg> • connected
+                  <div style="--arrow-size:5px;" class="to-top tooltip bg-gray-100 p-2 text-gray-900 text-xs absolute w-full word-break tracking-wider -mb-2"></div>
+                </div>
+            </section>
+            <form target="xhr" onsubmit="return false;" method="POST" action="/api/confirm" class="tooltip no-hover no-focus no-focus-within -slide h-44">
+                <label class="relative inline-block w-full">
+                    <i class="absolute text-6xl pointer-events-none right-0 text-gray-300 0 fa fa-key"></i>
+                    <p class="text-sm inline-block relative font-semibold mb-2">Public key: "G" with 56 alphanumeric characters</p>
+                    <div class="relative overflow-hidden rounded-lg p-0.5">
+                      <div class="opacity-0 bg-gradient-to-r from-transparent via-purple-600 to-transparent top-0 -left-10 right-1/2 absolute animate-spin origin-right bottom-1/2" style="animation-duration: 2.5s; animation-timing-function: ease-in-out;"></div>
+                      <input oninput="if(!byUserAgent(event)) return; let e=this; e.value.length>=e.maxLength&&toForm.validate()" required name="address" class="bg-transparent text-sm relative w-full p-2 placeholder-gray-500 outline-none border-b border-gray-400 rounded-t-lg" placeholder="Please paste your public key to avoid typos" maxlength="56">
+                    </div>
+                  </label>
+                  <i class="mt-1.5 w-full inline-block align-middle tooltip slide-y no-hover no-focus text-sm font-mono" id="log">validating public key....</i>
+                  
+              <section class="absolute tooltip inset-0 -mt-3 bg-white no-hover no-focus slide-y" style="z-index: auto;" id="trx">
+                <code id="elapsed" class='inline-block'>00:00</code>
+                <div class="relative text-right text-sm mt-1">
+                  <div class="absolute text-sm left-0">Least Fee: <code>1 XLM</code></div>
+                  <i id='signal' class="align-middle p-1.5 mr-1.5 rounded-full bg-yellow-400 inline-block"></i>awaiting payment...
+                </div>
+                <div class="space-y-1.5 text-sm -mx-6 pt-4">
+                  <p class="leading-6 tooltip -slide-y no-hover no-focus show text-gray-900 w-full"><i class="fa fa-exclamation-circle m-1 "></i>
+                    transaction details with your public key - <code id="publicKey" class="text-black word-break border-b border-current"></code> as a sender will appear here if you've paid at a time no earlier than the timer above
+                  </p>
+                  <div class="dump tooltip -slide-y p-3 bg-purple-50 no-hover no-focus absolute w-full"></div>
+                </div>
+                <i class="absolute right-0 bottom-0 dots-bars-10 -mb-5"></i>
+              </section>
+              <button onclick="if(byUserAgent(event)) slice(window['app'].children).forEach((e, i)=>e.classList[i?'remove':'add']('show'))" type="button" class="absolute top-full mt-2 p-3 px-5 border-l-0 border-2 border-gray-600 z-1 -left-9 tooltip no-hover no-focus no-focus-within -slide show rounded-r-full ripple"><i class="fa fa-arrow-left mr-1"></i> back</button>
+            </form>
+        </section>
+        <aside id="alt" class="overflow-hidden rounded-lg to-white inset-4 -bottom-4 absolute backdrop-filter backdrop-blur-sm tooltip no-hover no-focus no-focus-within -slide-y">
+            <aside class="rounded-xl bg-gradient-to-r from-purple-500 via-purple-500 to-green-400 opacity-40 absolute inset-0 pointer-events-none z-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0" width="100%" height="100%">
+                    <filter id="noise" x="0" y="0">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="1" stitchTiles="stitch"></feTurbulence>
+                        <feBlend mode="screen"></feBlend>
+                    </filter>
+                    <rect width="100%" height="100%" filter="url(#noise)" opacity="0.9"></rect>
+                </svg>
+            </aside>
+            <section class="w-3/4 m-auto h-auto mt-8">
+                <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" class="absolute rounded-xl bottom-0 left-0 animate-bounce w-12 ml-3">
+                  <g id="freighter">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.748 24C32.8599 20.5495 29.7277 18 26 18C21.5817 18 18 21.5817 18 26C18 30.4183 21.5817 34 26 34C29.7277 34 32.8599 31.4505 33.748 28H40.6667V34.6667H44.6667V28H47.3333V34.6667H51.3333V28H54V24H33.748ZM30 26C30 28.2091 28.2091 30 26 30C23.7909 30 22 28.2091 22 26C22 23.7909 23.7909 22 26 22C28.2091 22 30 23.7909 30 26Z"
+                      fill="currentColor"></path>
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M38.252 48C39.1401 51.4505 42.2723 54 46 54C50.4183 54 54 50.4183 54 46C54 41.5817 50.4183 38 46 38C42.2723 38 39.1401 40.5495 38.252 44H31.3333V37.3333H27.3333L27.3333 44H24.6667L24.6667 37.3333H20.6667L20.6667 44H18L18 48H38.252ZM42 46C42 43.7909 43.7909 42 46 42C48.2091 42 50 43.7909 50 46C50 48.2091 48.2091 50 46 50C43.7909 50 42 48.2091 42 46Z"
+                      fill="currentColor"></path>
+                  </g>  
+                </svg>
+                <h3 class="font-fredoka">Freighter wallet detected</h3>
+                <p id="detail" class="mt-1.5 text-sm relative z-1">
+                  <span class="duration-500 ease-out">Connecting the wallet makes this process smoother with you being in the know and in control at every step</span>
+                  <span class="duration-500 ease-out absolute opacity-0 top-0 left-0">Connecting the wallet makes this process smoother with you being in the know and in control at every step</span>
+              </p>
+            </section>
+            <div class="text-right pr-4 mt-7">
+                <button class="p-1 rounded-full relative" onclick="if(!byUserAgent(event)||this.textContent.trim()!=='retry address request') return; let t=this, i=t.querySelector('i'), s = i.nextElementSibling; notify.current===0&&(i.classList.replace('fa-undo', 'fa-wallet'), s.textContent=notify.notices[notify.current][1]); parent.postMessage({source: 'frame', requestAddress:!0})/*this.querySelector('span').textContent='opening wallet...'*/">
+                    <div class="absolute border-r-0 border-2 border-current inset-0 right-1/2 rounded-l-full mr-0.5"></div>
+                    <div class="absolute border-l-0 border-2 border-current inset-0 left-1/2 rounded-r-full ml-0.5"></div>
+                    <div class="px-4 relative p-2 hover:bg-purple-700 hover:text-white duration-300 ease-out ripple rounded-inherit">
+                        <i class="fa fa-wallet mr-2"></i> <span id="linkStatus" class="inline-block align-middle truncate" style="max-width:11rem">connecting wallet...</span></div>
+                </button>
+            </div>
+        </aside>
     </section>
+    
+    </div>
 
-    </div> 
-
-        <iframe id="xhr" class="mt-3 rounded-xl border border-gray-700 w-full" onload="let txt=['textContent', 'innerHTML'].map(p=>this.contentWindow.document.body[p]); if((txt=txt.filter(e=>e)).length) receive(txt)/*has content*/"></iframe>
+	      <script src='js/index.js'></script>
         <script>
-          /*use code from freighterApi codebase to detect if freighter wallet is available*/
-          window.postMessage({source:"FREIGHTER_EXTERNAL_MSG_REQUEST", messageId:Date.now()+Math.random(), msg:{type:"REQUEST_CONNECTION_STATUS"/*"REQUEST_PUBLIC_KEY"*/}}, window.location.origin),
-          new Promise(resolve=>{
-            let timeout=0, onMessage=(event, data)=>{
-              data = event.data;
-              console.log("::FREIGHTER::EVENT", event);
-              if(event.source!==window) return; // only accept if data is from own initiator above 
-              if (event?.data?.source !== "FREIGHTER_EXTERNAL_MSG_RESPONSE") return; //only confirm presence if it matches constant
-              resolve({isConnected:true, data}), clearTimeout(timeout),
-              window.removeEventListener('message', onMessage)
-            };
-            timeout=setTimeout(_=>{
-              resolve({isConnected:false})
-            }, 2000),
-            window.addEventListener('message', onMessage, false)            
-          }).then(obj=>{
-            console.log('::FREIGHTER::', obj)
-          });
-          /*end of try out*/
-          let struct  = {source:'frame'};
-          window.onmessage = function(msg, data) {
-            if((data=msg.data).source!=='parent') return;
-          }
           window.addEventListener('DOMContentLoaded', _=>{
-            animations.addRippleAnimations()
+            animations.addRippleAnimations(), canBlur=html.style.backdropFilter!==void 0
+            /*check for the existence of needed varaibles and send a signal to parent to "begin"
+            parent.postMessage({source: frame, begin:!0}, '*')
+            */
           })
-          function receive(txts) {
-            /*function to receive data passed to iframe via form in backwards-compatible AJAX fashion*/
-            console.log(txts)
+
+          let slice = arr_like=>[].slice.call(arr_like);
+          function notify(i, t) {
+            (t=notify).notices ||=[['The public key for your wallet is required as an address for verifying transactions made by you to other public keys', 'requesting public key...']],
+            (t.descs ||=slice(window['detail'].children))[1].textContent = t.notices[i][0],
+            t.current = i
+
+            t.descs.forEach(e=>e.classList.toggle('opacity-0')),
+            window['linkStatus'].textContent = t.notices[i][1]
           }
-          function toggleScopes() {
-            [app, alt].forEach(e=>e.classList.toggle('show'))
+          let uA = navigator.userAgent, html=document.documentElement, canBlur, struct  = {source:'frame'};
+          window.onmessage = function(ev, data, val, status) {
+            /* will need to be authorized in a non-modifiable way */
+            if((data=ev.data).source!=='parent') return;
+
+            struct.tStamp ||= ([['pN', 'cL'], ['pN', 'pES', 'cL']].forEach(rel=>Abbr.to(window['app'], rel).toggle('show')), new Date())
+            /*for when this widget is first called for validation*/
+            beginWatch('GCRORZZNEUQJCN4TEE5SDNL7YTRMVEFOKS643CGLMGHTY4HMADYBJDFP'),
+            console.log('::FRAME::MESSAGE::', data);
+            (struct.isConnected = data.isConnected)
+            &&(struct.once||=(toggleScopes(), !0)),
+            /*cater for a behaviour whereby only the last postMesssage from the parent window is sent thereby skipping others*/
+            data.setAllowed&&setTimeout(_=>{
+              window['linkStatus'].textContent='connected wallet',
+              setTimeout(_=>{
+                notify(0)
+              }, 3000)
+            }, 1400),
+            status=(txt, cls)=>{
+              window['linkStatus'].textContent=txt, window['linkStatus'].previousElementSibling.classList.replace('fa-wallet', cls)
+            },
+            (val=data.requestAccess)
+            &&status((val = val==='::FAILED::')?'retry address request'
+              :(window['seeId'].classList.add('show'), Abbr.to(window['seeId'], 'lEC').textContent = data.requestAccess,
+                setTimeout(_=>{toggleScopes(), toForm.validate&&toForm.validate()/*for a hasty user that "proceeds" before freighter wallet detection*/}, 800), Abbr.to(window, ['app', 'lEC']).address.value = window['publicKey'].textContent = data.requestAccess),
+            val?'fa-undo':'fa-key')
+          };
+
+          function toggleScopes(arr) {
+            arr=toggleScopes.arr||=[app, alt].map(e=>e.classList),
+            /*to cater for browsers that do not support backdropFilter */
+            (canBlur=html.style.backdropFilter!==void 0) ? arr[1].toggle('show') : arr.forEach(cls=>cls.toggle('show'))
           }
-          window.freighterApi.isConnected().then(bool=>{
-            console.log('::IS CONNECTED::', bool);
-            // bool&&toggleScopes()
-          })
+          function toForm(data, t, app, logs, log, redo, txt) {
+            /*shift focus to the form for validating sent crypto*/
+            errs = {200:'', 400:'Invalid address; try to copy and paste address directly to avoid typos', 404: 'Address has no transaction history, it points to an empty wallet'},
+            window['alt'].classList.contains('show')&&toggleScopes(), txt = 'validating public key....',
+
+            slice(app = window['app'].children).forEach((e, i)=>e.classList[i?'add':'remove']('show')),
+            reset=flag=>{ app[1].classList.remove('loading'), //flag&&log.classList.remove('show'),
+              flag&&(log.textContent='validated public key', app[1].address.setAttribute('disabled', ''),
+              setTimeout(_=>verifyPay(), 1000))
+            },
+            (t = toForm).validate=_=>{
+              data = app[1].address.value ||= data||'', app[1].classList.add('loading'), (log=window['log']).classList.add('show'),
+              fetch(`https://horizon-testnet.stellar.org/accounts/${data}/payments`).then((res, status, bool)=>{
+                bool = !(log.textContent = errs[status=res.status])
+                &&(log.textContent=txt, window['publicKey'].textContent=data), setTimeout(_=>reset(bool), 1000);
+                return res.json()
+              }).then(json=>{struct.history=json._embedded.records, console.log('::JSON::', json)})
+              .catch((err, m)=>{
+                log.textContent = (m=err.message)+'.'.repeat(!/\.$/.test(m))+' You are probably offline',
+                reset(0)
+              })
+            }
+            t.called = !0, app[1].address.value&&t.validate();
+          }
+          function beginWatch(addr, t, es) {
+            if((t = beginWatch).init) return;
+            struct.interval = setInterval((m,s, t, pad)=>{
+              pad=e=>'0'.repeat(2-e.length)+e,
+              m = (t=new Date(new Date - struct.tStamp)).getMinutes()+'', s = t.getSeconds()+'',
+              window['elapsed'].textContent = pad(m)+':'+pad(s)
+            }, 1000), t.init = !0,
+
+            (es = t.eventSource = new EventSource(`https://horizon-testnet.stellar.org/accounts/${addr}/payments`))
+            .onmessage = function(message) {
+              let values=[], result = message.data ? JSON.parse(message.data) : message, txt = {'created_at':'Created at'}, 
+              withinTime = new Date(result.created_at) > struct.tStamp;
+                
+              if(result.type=='payment'&&result.transaction_successful&&result.source_account===window['publicKey'].textContent&&withinTime) struct.result=result, ['created_at', 'from', 'to', 'amount']
+                .forEach((e, i, res)=>{ res=result[e], values.push(txt[e]||e), values.push(i?res:new Date(res)+'')}),
+                verifyPay.write(values)
+            },
+            es.onerror = function(err) {
+              /* a GET request error due to no internet access - it can be ignored*/
+            }
+          }
+          function verifyPay(init, dump, loader) {
+            !init&&window['trx'].classList.add('show'),
+            loader= Abbr.to(dump =  Abbr.to(window['publicKey'], ['pN', 'nES']), ['pN', 'nES']),
+            verifyPay.write = (values, even, odd, html, signal)=>{
+              (signal = window['signal']).classList.add('bg-green-200'), Abbr.to(signal, 'nS').data = 'verified as human', clearInterval(struct.interval),
+              odd = values.filter((e, i)=>i%2), html='', (even=values.filter((e, i)=>!(i%2))).forEach((e, i)=>{
+                html+=`<div class="relative w-full mb-2.5"><i class="w-1/4">${e.replace(/^[a-z]/, e=>e.toUpperCase())}:</i>
+                  <code class="w-3/4 float-right font-semibold truncate">${odd[i]+' XLM'.repeat(!odd[i+1])}</code>
+                </div>`
+              }),
+              dump.innerHTML = html, loader.classList.remove('dots-bars-10'), [dump, Abbr.to(dump, 'pES')].forEach((e, cls)=>{ (cls=e.classList).toggle('show'), cls.toggle('absolute') }),
+              Abbr.to(loader, ['pN', 'nES', 'cL']).remove('show')
+            }
+          }
+          verifyPay(!0)/*initializes and creates <Fn>.write*/
+          /*
+          <iframe onLoad="var c=this;window.addEventListener('message',function({data,source}){if(c&&source===c.contentWindow&&data.widget===c.src)c.style.height=data.height+'px'},false);" src="https://stellar.expert/widget/testnet/tx/info/bed921670fe7b19ba4499df644bb3234b0dc39eaca0840209374596358fd9525" style="border:none;overflow:hidden;max-width:100%; min-width:300px;max-height:100%;min-height:200px;width:100%"></iframe>
+          Hash metadata: https://horizon-testnet.stellar.org/transactions/bed921670fe7b19ba4499df644bb3234b0dc39eaca0840209374596358fd9525
+
+          Basic flags in detecting selenium
+          document.$cdc_asdjflasutopfhvcZLmcfl_
+          navigator.webdriver===true
+          */
         </script>
     </body>
 </html>

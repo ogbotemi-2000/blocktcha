@@ -1,7 +1,6 @@
-import config from '../config.json' assert {type: "json"};
-import {$} from 'execa';
+let config =  require('../config')
 
-export async function GET(request) {
+module.exports =  async function(request, response) {
     const rawBody = await request.text()
-    return new Response(JSON.stringify({ query: request.query, verb: request.method, rawBody, body: request.body, config }))
+    return response.json({ query: request.query, verb: request.method, rawBody, body: request.body, config })
 }

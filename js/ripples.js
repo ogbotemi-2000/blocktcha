@@ -16,7 +16,7 @@ let distance = (x1, y1, x2, y2) => {
     };
 
 /*tailwind css classnames*/
-ripple.className = 'absolute p-1 origin-center rounded-full transform-gpu duration-500 ease rounded-full ease origin-center';
+ripple.className = 'absolute p-1 origin-center rounded-full transform-gpu duration-500 ease';
 
 animations.nearby=function(pos) {
   

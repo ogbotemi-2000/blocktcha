@@ -6,7 +6,6 @@ module.exports = function(request, response) {
 es.onmessage = function (message) {
   let result = message.data ? JSON.parse(message.data) : message;
   console.log('\n', "_".repeat(4), "New payment:", result);
-  fs.writeFileSync
 };
 es.onerror = function (error) {
   console.log("An error occurred!");
