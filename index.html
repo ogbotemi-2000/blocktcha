@@ -1,89 +1,225 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Blocktcha Widget</title>
+<!DOCTYPE HTML><head>
+        <title>Authentication by blocktcha | Micro-payment based captcha on Stellar blockchain</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/tailwind.min.css">
         <link rel="stylesheet" href="css/all.min.css">
-        <link rel="stylesheet" href="css/page.css">
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js'></script>
-        <script type="module" src="js/test.js"></script>
+        <link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/page.css">
         <script src="js/ripples.js"></script>
         <script src="js/utils.js"></script>
-        <style>
-          iframe#widget {
-            height: max-content;
-          }
-          
+        <script src="js/rellax.min.js"></script><script>
+let debug=/debug/.test(location.search), slice=arr=>[].slice.call(arr), qsa=str=>slice(document.querySelectorAll(str)),
+page = {
+   delayBars: (choice, t, cnv)=> {
+    t = page.delayBars, t.bars||=qsa('.ca4513da').map(n=>slice(n.children)), cnv=Math.PI/180;
+    t.delays = [(i, n)=>Math.sin(cnv * i * 180/n), (i, n)=>Math.cos(cnv * i * 180/n), (i, n)=>i],
+    t.bars.forEach(arr=>arr.forEach((n, i)=>n.style.cssText = '--index:'+t.delays[choice](i, arr.length)))
+  },
+  animBars:(v, t, txt, dir)=>{
+    txt = ((t=page.animBars).st||=document.querySelector('style')).textContent,
+    dir = (innerWidth > 640 ? 'x' : 'y'),
+    t.st.textContent = txt.replace(new RegExp(dir+":[^,}]+"), dir+':'+v)
+  },
+  to: function(txt, t, i,) {
+    t = this.to, t.txts||=[];/*txts will be made available in DOMContentLoaded*/ if((i=t.txts.indexOf(txt))===-1) return;
+    [(t.nodes ||=qsa('article section.tooltip'))[t._i||=0], t.nodes[_i=i]].forEach(e=>e.classList.toggle('show')),
+    t.vals||=[]
+  }
+}
+</script>
+<!-- style tag is read/write for animation on page -->
+<style>.ca4513da:not(.flex-col)>div{--y:1}.ca4513da.flex-col>div{--x:1}</style>
+<style>.bg-squiggle {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3' enable-background='new 0 0 6 3' width='6' height='3' fill='%23facc15'%3e%3cpolygon points='5.5%2c0 2.5%2c3 1.1%2c3 4.1%2c0'/%3e%3cpolygon points='4%2c0 6%2c2 6%2c0.6 5.4%2c0'/%3e%3cpolygon points='0%2c2 1%2c3 2.4%2c3 0%2c0.6'/%3e%3c/svg%3e");
+}
+.text-gradient {
+        background: linear-gradient(40deg, #ceb07c 0%, #e82a52 100%);
+    background-size: cover;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+    .draw-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw-stroke 2s ease-out forwards;
+}
+@keyframes draw-stroke {
+    0% {
+    stroke-dashoffset: 1;
+}
+
+100% {
+    stroke-dashoffset: 0;
+}
+    }
+@font-face {
+    font-family: 'Capsmall_clean';
+    font-style: normal;
+    font-weight: normal;
+    src: local('fonts/Capsmall_clean'), url('fonts/Capsmall_clean.woff') format('woff');
+					}
+					.font-capture {
+						font-family: Capsmall_clean;
+					}
+    *:hover > .decorate > div, chrome .decorate-parent:hover > .decorate > div {
+                --tw-scale-x: 8;
+                --tw-scale-y: 8;
+                transform: scale3d(var(--tw-scale-x),var(--tw-scale-y),1);
+                --tw-bg-opacity: 0.15;
+            }
+
+            * > .decorate.out > div, .decorate-parent > .decorate.out > div {
+                --tw-scale-x: 8;
+                --tw-scale-y: 8;
+            }
+
+            *:hover > .decorate.out > div, .decorate-parent:hover > .decorate.out > div {
+                --tw-scale-x: 1;
+                --tw-scale-y: 1
+            }
         </style>
     </head>
     <body>
-        <main>
-            <section class="vh-full text-center m-auto p-2">
-                <!-- sandbox="allow-forms allow-scripts" -->
-                <div class="blocktcha__root inline-block p-2 bg-green-100 sm:relative">
-                  <iframe id="blocktcha_widget" height="200" src="./widget.html" style="transition: height 0.8s ease-out;" class="overflow-hidden w-4/5 sm:w-96 left-0 bg-white tooltip slide-y no-hover no-focus no-focus-within pt-5 overflow-hidden inline-block border-2 rounded-3xl absolute"></iframe>
-                  <div class="opacity-0 duration-300 ease-out pointer-events-none bg-yellow-500 fixed inset-0" style="z-index:99999"></div>
-                  I am a human <button class="mx-4 rounded-full border-2 border-gray-500 p-2 px-5 relative ripple" onclick="if(init.inited) return; byUserAgent(event)?init(this):Abbr.to(this, 'pS').data='This is a robot not a human'">verify</button>
-                  </div>      
-            </section>
-        </main>
+			<nav style="--tw-bg-opacity:0.1" class="w-full bottom-0 fixed [&>*]:align-middle [&>*]:inline-block z-10 pb-5  sm:text-center px-2 bg-white pb-7 sm:bg-transparent">
+<div id="growShrink" class="text-sm rounded-full" data-classname="relative" onclick="console.log(event); let txt, a = [].slice.call(event.composedPath(), 0, 3).find(e=>e.tagName==='A'); a&&page.to(a.textContent.trim().toLowerCase())">
+      <div style="--px:0.6em; --py:0.5em; --tw-bg-opacity:calc(var(--bg-opacity-pad) + 0.3)" class="[&>*]:align-middle rounded-inherit [&>*]:rounded-inherit inline-block [&>*]:p-xy bg-gray-200 backdrop-filter backdrop-blur p-1 md:py-3">
+        
+        <a href="#rules" class="hover:bg-yellow-500 relative bg-yellow-500"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">The big idea</span></a>
+        <a href="#rules" class="hover:bg-yellow-500 fluid base:show"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Motivation</span></a>
+        <a href="#rules" class="hover:bg-yellow-500 relative fluid sm:show"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Scope</span></a><a href="#roadmap" class="fluid md:show hover:bg-yellow-500"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Roadmap</span></a>
+        
+        <a href="#faq" class="fluid md:show hover:bg-yellow-500"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Likely FAQ</span></a>
+        
+        
+        
+        
+        <div class="md:absolute md:invisible relative">
+          <button class="hover:bg-gray-300 ripple relative text-current" style="border-color: currentcolor;">•••</button>
+          <div style="padding:0px; --tw-bg-opacity:calc(var(--bg-opacity-pad) + 0.4)" class="border border-gray-400 text-sm bg-yellow-100 sm:bottom-unset bottom-0 backdrop-filter backdrop-blur"><div class="relative"><a href="#roadmap" class="hover:bg-yellow-500 relative"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Roadmap</span></a><a href="#faq" class="hover:bg-yellow-500 relative"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Likely FAQ</span></a></div><div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+<button class="sm:mx-3 relative rounded-full float-right mr-1 duration-500 ease-out text-current p-0 sm:float-none">
+    <div class="mt-0.5 -ml-px absolute h-1/2 w-1/5 rounded-tl-full border-t border-l border-current top-0 left-0"></div>
+    <div class="mt-2 rounded-3xl overflow-hidden absolute inset-0 text-gray-700 m-1 mb-2"><div style="transform-origin: bottom; animation-duration: 3s; transform-origin: top right" class="w-1/3 top-1/2 origin-center bg-gradient-to-r from-transparent via-current to-tansparent absolute animate-spin p-10"></div></div>
+<div class="absolute h-1/2 w-1/4 rounded-br-full bottom-0 right-0 border-b border-r border-current mb-0.5 -mr-0.5"></div><div style="--tw-bg-opacity: calc(var(--bg-opacity-pad) + 0.4);" class="mt-3 m-2 relative inline-block  p-3 px-5 rounded-3xl bg-gray-100 w-36 truncate font-semibold ripple backdrop-filter backdrop-blur"><i class="fa fa-globe text-lg inline-block align-middle mr-2"></i>use on site</div>
+</button>
+  </nav><h1 class="fixed precise-typo-1 bottom-3/4 md:bottom-1/2 w-full text-center text-black font-capture pointer-events-none rellax" style="letter-spacing: -3px;" data-rellax-speed="-1">blocktcha</h1>
+<section class="relative text-center w-full sm:flex sm:items-center overflow-hidden vh-full text-gray-500 bg-white">
+<aside class="sm:h-96 h-1/4 flex relative ca4513da flex-1 _reverse z-1"><div class="flex-1 bg-yellow-200" style="--index: 0;">
+    <div class="font-mono w-4">transaction_hash</div>
+</div>
+<div class="flex-1 bg-gray-200" style="--index: 0.3420201433256687;"></div><div class="flex-1 bg-green-200" style="--index: 0.6427876096865393;"><div class="font-mono w-3">paging_token</div></div><div class="flex-1 bg-red-200" style="--index: 0.8660254037844386;"></div><div class="flex-1 bg-blue-200" style="--index: 0.984807753012208;">
+    <div class="font-mono w-4 mt-3">{type: 'payment'}</div>
+</div><div class="flex-1 bg-yellow-200" style="--index: 0.984807753012208;"></div>
+<div class="flex-1 bg-red-200" style="--index: 0.8660254037844387;"><div class="font-mono w-5">GCr54DFKD904ELK90294545AQW890</div></div><div class="flex-1 bg-green-200" style="--index: 0.6427876096865395;"></div><div class="flex-1 bg-blue-200" style="--index: 0.3420201433256689;">
+    <div class="font-mono w-6 mt-4">{asset_type: 'native'}</div>
+</div></aside><article class="text-black sm:w-1/2 relative">
+    <section class="tooltip absolute no-hover no-focus no-focus-within slide-y show inset-0 top-1/4" style="z-index:auto"><h1 class="font-capture text-7xl inline-block">blocktcha</h1>
+<div class="p-2 [&>*]:inline-block [&>*]:p-1"><a href="javascript:void(0)" class="font-mono underline mr-5">A CAPTCHA alternative <span class="inline-block align-middle">⇲</span></a><a href="javascript:void(0)" class="font-mono underline">Via micro-payments in crypto<span class="inline-block align-middle">⇲</span></a><a href="javascript:void(0)" class="font-mono underline">Live on the Stellar blockchain<span class="inline-block align-middle">⇲</span></a></div>
+</section>
+<section class="text-left sm:border-2 border-black rounded-xl absolute bg-white sm:p-5 p-7 tooltip no-hover no-focus no-focus-within slide-y relative" style="z-index:auto">
+    <aside class="absolute bottom-full border-black border left-7 right-7 p-3 sm:-left-1/3 sm:right-1/2 mb-2">
+    some text here to see the effect of not setting z-index on absolutely positioned  children of parents that are behind in z-index to their siblings
+</aside>
+<h2 class="precise-typo font-bold">blocktcha</h2><p class="mb-1.5">Built for</p><a class="border-2 rounded-full px-4 py-1  border-black bg-yellow-400 font-bold text-xs">Stellar smart contract challenge 2024</a>
+<hr class="border-black my-3"><p class="text-sm">AIMS</p>
+<div class="mt-2 font-mono text-sm sm:pb-2">
+<i class="fa fa-user-check text-lg text-yellow-700"></i> • User verification as human
+<hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Timed verification of users
+<hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Blockchain for immutability<hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Privacy via annonymity
+<div class="sm:mt-3.5 text-right sm:absolute sm:right-0">
+    <a class="sm:border-r-0 sm:border-l-0 sm:border-t-0 border-gray-400 sm:border-current border-2 mt-5 p-2 rounded-full px-4 hover:bg-gray-200 text-xs bg-white" href="framework.html">interact with a demo</a>
+</div></div></section></article>
 
-        <script>
-          let struct={retries:0, source:'parent'}, mthd, requestAddress, stored={}, widget = window['blocktcha_widget'], frameHs = [410, 420];
-          function init(node) {
-            init.inited||=!0,
-            Abbr.to(node, [{2:'pES'}, 'cL']).add('show'), Abbr.to(node, ['pES', 'cL']).add('opacity-10');
-            setTimeout(begin, 300), setTimeout(_=>widget.height=frameHs[0], 1000)
-          }
-          scopeLoaded(window, function(){
-            animations.addRippleAnimations()
-          })
-          function scopeLoaded(scope, callback, document, t) {
-            document = scope.document || scope.contentDocument,
-            t=scopeLoaded, clearInterval(t.intrvl),
-            t.intrvl =setInterval(function() {
-              if(document.readyState ==='complete') clearInterval(t.intrvl), callback();
-            })
-          }
+<aside class="sm:h-96 h-1/4 flex ca4513da [&>*]:relative relative flex-1 z-1 w-full"><div class="flex-1 bg-yellow-200" style="--index: 0;"><div class="font-mono w-6 mt-4">{amount: '20.0000000'}</div></div>
+<div class="flex-1 bg-gray-200" style="--index: 0.3420201433256687;">
+    
+</div><div class="flex-1 bg-green-200" style="--index: 0.6427876096865393;"><div class="font-mono w-4">2024-07-28T00:24:03Z</div></div><div class="flex-1 bg-red-200" style="--index: 0.8660254037844386;"></div><div class="flex-1 bg-blue-200" style="--index: 0.984807753012208;"><div class="font-mono w-8 mt-4">e8ab499a208ee24320ad006e3f9d7aee27503b5892ccd5796f11359135b9e593</div></div><div class="flex-1 bg-yellow-200" style="--index: 0.984807753012208;"></div>
+<div class="flex-1 bg-green-200" style="--index: 0.8660254037844387;">
+    <div class="font-mono w-6 mt-8">3255714059390977</div>
+</div><div class="flex-1 bg-red-200" style="--index: 0.6427876096865395;"></div><div class="flex-1 bg-blue-200" style="--index: 0.3420201433256689;"><div class="font-mono w-8">https://horizon-testnet.stellar.org</div></div></aside></section>
 
-          window.onmessage = function(ev, data, mthd) {
-            if((data=ev.data).source!=='frame') return;
-            /* to retry requesting address from detected freighter wallet upon failure*/
-            data[mthd='requestAddress']&&requestAddress(stored[mthd], true)
-          }
-          /*the freighterApi.isConnected method sometimes resolves to an intial false hence why struct.retries is used to retry at most 3 times */
-          let begin=_=>setTimeout(_=>{
-            widget.contentWindow.postMessage({source:'parent', init:!0}, '*'),
-            window.freighterApi[mthd='isConnected']().then(bool=>/*added a delay to make for gradual UX*/new Promise(resolve=>setTimeout(_=>resolve(bool), 2400)))
-            .then(bool=>(!bool&&struct.retries<3&&(++struct.retries, begin()), struct[mthd] = bool)&&(widget.contentWindow.postMessage(struct, '*'), bool))
-            .then(bool=>{
-              delete struct[mthd],/*remove previously checked operation to avoid redundancy*/
-              bool&&window.freighterApi[mthd='setAllowed']().then(function(allowed) {
-                (struct[mthd] = allowed)&&widget.contentWindow.postMessage(struct, '*');
-                return allowed;
-              })
-              .then(requestAddress = async (allowed, flag)=>{
-                stored.requestAddress = allowed,/*keep the value for the sake of retries*/
-                delete struct[mthd];/*remove previously checked operation to avoid redundancy*/
-                if(allowed) {
-                  let pK, err;
-                  try {
-                    pK = await window.freighterApi[mthd='requestAccess']()
-                  } catch(e) {err = e }
-                  struct[mthd] = err?'::FAILED::':pK
-                  // !flag&&(struct[mthd] = '::FAILED::')
-                  if(!err&&!pK) { /*first time connection sometimes return empty response as address, retry if it does*/return requestAddress(allowed) }
-                  setTimeout(_=>widget.contentWindow.postMessage(struct, '*'), flag?1000:6000/*wait until status texts are animated in the frame*/)
-                }
-              })
-            })
-          }, 1000/*a bit of delay to provide room for extension to behave properly*/);
-        </script>
-        <script type="module">
-          import {invoke} from './js/test.js';
-          console.log('::EXPORTED::MODULE::', invoke)
-        </script>
+
+
+
+			    <hr class="relative bg-white h-20 border-0" id="alternative">
+<section class="relative bg-white">
+    <article class="w-full text-center [&>*]:text-left [&>*]:inline-block [&>*]:align-middle inline-block"><p class="text-xl sm:w-96 font-semibold">A rethink on just what bots can and <code class="font-capture">cannot</code> do</p>
+
+<div class="sm:border-t-0 sm:border-l sm:mt-0 mt-5 px-4 p-3 inline-block border-t border-gray-400">I am human <button class="relative ripple ml-3 rounded-full p-3 px-6 border-2 border-gray-300">verify</button><a class="absolute slide-y tooltip no-hover block text-sm underline" target="_blank" href="framework.html">Wanna verify? Open in a new tab</a>
+</div><br>
+
+<h2 class="relative text-6xl font-mono inline-block py-10 px-4 rellax duration-300 ease-out" data-rellax-desktop-speed="-1" data-rellax-tablet-speed="0" data-rellax-speed="0"><span class="border-current">b</span><span class="border-current">l</span><span class="border-current">o</span><span class="border-current">c</span><span class="border-current">k</span><span class="border-current">t</span><span class="border-current">c</span><span class="border-current">h</span><span class="border-current">a</span></h2>
+
+<div class="p-3 mx-4 sm:mx-8 md:w-1/2 md:mt-4 font-mono">As trusted as bots are for their effectiveness, it is quite hard to have a bot make payments on your behalf
+<hr class="my-1">
+Say, a bot given some financial info like an ATM card details for instance, to automate payments. That is quite a hard-sell
+    <hr class="mx-32 my-1 h-1.5 rounded-full border-0 bg-gray-300">
+It however begs the question of whether bots can 
+successfully interact with say an extension like Metamask or Freighter wallet in chrome drivers and perform click actions to authorize actions or send tokens.
+</div>
+</article><section class="mt-14 mx-6 text-center">
+<h2 class="text-xl sm:text-2xl my-8 font-capture text-gradient">Incorporationg an ingenious way of detecting clicks as being by bots</h2>
+<div class="m-auto inline-block sm:w-60 text-center w-full [&>*]:inline-block [&>*]:align-middle align-top mb-2"><div class="p-2 relative">
+<svg viewBox="0 0 640 512" class="w-10 inline-block"><path d="M32,224H64V416H32A31.96166,31.96166,0,0,1,0,384V256A31.96166,31.96166,0,0,1,32,224Zm512-48V448a64.06328,64.06328,0,0,1-64,64H160a64.06328,64.06328,0,0,1-64-64V176a79.974,79.974,0,0,1,80-80H288V32a32,32,0,0,1,64,0V96H464A79.974,79.974,0,0,1,544,176ZM264,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,264,256Zm-8,128H192v32h64Zm96,0H288v32h64ZM456,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,456,256Zm-8,128H384v32h64ZM640,256V384a31.96166,31.96166,0,0,1-32,32H576V224h32A31.96166,31.96166,0,0,1,640,256Z"></path></svg>
+<svg viewBox="0 0 512 512" class="absolute top-0 inset-0">
+                <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z" stroke="orangered" stroke-width="20" class="draw-strokes" pathLength="1" fill="transparent"></path>
+
+            </svg></div>
+
+
+<div class="ml-4 p-2.5 -mb-2 relative">
+<svg viewBox="0 0 512 512" class="w-8 inline-block"><path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
+<svg viewBox="0 0 512 512" class="absolute top-0 inset-0">
+                <path strokedashoffset="0" fill="transparent" pathLength="1" class="draw-stroke" stroke-width="20" stroke="orangered" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
+
+            </svg></div>
+<br><button class="ripple mt-5 p-3 px-4 bg-yellow-500 font-semibold rounded-full" data-persist-ripple="">click to try detection</button>    
+</div>
+<pre class="text-sm text-left w-full text-gray-700 inline-block whitespace-normal sm:w-72 space-x-3">{<br><span class="text-red-500">clientX:</span> 0
+  <span class="text-red-500">clientY:</span> 0
+  <span class="text-red-400">pageX:</span> 0
+  <span class="text-red-400">pageY:</span> 0
+  <span class="text-red-400">screenX:</span> 0
+  <span class="text-red-400">screenY:</span> 0
+  <span class="text-red-400">layerX:</span> 0
+  <span class="text-red-400">layerY:</span> 0
+  <span class="text-red-400">x:</span> 0
+  <span class="text-red-400">y:</span> 0
+  <span class="text-red-400">pointerType:</span>
+  <span class="text-red-400">detail:</span> 0
+  <span class="text-red-400 font-semibold">isTrusted:</span> false<br>}</pre></section>
+
+ 
+<h2 class="absolute precise-typo-1 font-capture word-break text-gray-700 opacity-10 pointer-events-none select-none left-0 right-0 rellax z-2 sm:-top-32 top-0 duration-300 ease-out md:-top-1/3" data-rellax-mobile-speed="-15" data-rellax-tablet-speed="-2" data-rellax-desktop-speed="3"><div class="text-center">A</div><div style="letter-spacing: -15px;" class="text-center">CAPTCHA</div><div style="letter-spacing: -7px;" class="text-center">alternative</div></h2><hr class="h-28 border-0 bg-gradient-to-t from-gray-50 relative" id="micro-payments"></section>
+<section class="relative z-1">
+    <div class="relative bg-white sm:p-5 p-10 text-center">
+    
+<article class="inline-block sm:w-1/3 mb-5">
+    <h2 class="text-3xl font-capture">Via micro-payments in crypto</h2><p class="mt-1">You send crypto, get verified as the sender and as human via your wallet address confirmed as the source</p>
+</article>
+<img src="widget.png" class="inline-block sm:w-96">
+</div><p class="text-center pb-2 bg-white"><i class="fa fa-lock border-4 border-gray-400 text-lg p-3 mr-2 rounded-full px-3.5"></i> In a sandboxed environment</p><div class="bg-white">
+    <code class="bg-white p-3 inline-block border-r border-t rounded-tr-2xl border-gray-400"><i class="align-middle fab fa-python p-1 text-3xl"></i> selenium</code></div>
+
+<div class="bg-squiggle h-40 lg:h-52 xl:h-60 relative">
+ <i class="fa fa-user-cog text-3xl m-4 absolute bottom-0"></i>
+<i class="fa fa-user-check text-3xl m-4 absolute right-0"></i></div>
+<div class="bg-white text-right">
+    <code class="bg-white p-3 inline-block border-l border-b rounded-bl-2xl border-gray-400"><i class="align-middle fab fa-python p-1 text-3xl"></i> selenium</code></div><div class="relative h-56 bg-white"></div></section><div class="rounded-full shadow m-4 relative inline-block mb-40 z-1"><div class="out decorate inset-0 absolute"><div class="bg-gray-300 inset-0 absolute p-0 rounded-full duration-150 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.8; --tw-scale-y:var(--tw-scale-x);"></div></div><button class="text-2xl p-3 fa fa-landmark relative bg-white rounded-full border-gray-400 border-2" onclick="(this.nav||=objWalk(this, {2:'parentNode'})).classList.toggle('-translate-x-full')"> </button></div><script>w_Ev('onbeforeunload')(_=>"Prevents unintentional reloads of the page");
+let DOMLoaded, vars=[];
+vars[1] =_=>{
+  if(DOMLoaded) vars[0].forEach(n=>n.classList[cLs(innerWidth>=640)]('flex-col'));
+},
+w_Ev_dom(function() {
+  if(debug) return;
+  DOMLoaded = !0, vars[0] = qsa('.ca4513da'), new Rellax('.rellax'),
+  page.to.txts = qsa('nav #growShrink > div > a').map(e=>e.textContent.trim().toLowerCase()), vars[1]();
+}),
+w_Ev_rz(vars[1])
+</script>
     </body>
-</html>
