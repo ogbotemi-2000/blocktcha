@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html class="overflow-hidden">
     <head>
         <title>Widget via Iframe</title>
@@ -71,7 +71,10 @@
         </style>
     </head>
     <body>
-      <div class="sm:absolute pb-5 cursor-move"><div class="h-2 bg-gray-400 rounded-full mx-24 sm:hidden"></div></div>
+      <div class="text-right">
+        <button onclick="parent.postMessage({ source:'frame', close:!0 })" class="ripple relative border-gray-700 p-3 pr-5 border border-r-0 rounded-l-2xl"><i class="mr-3 fa fa-times"></i>close</button>
+      </div>
+      <!-- <div class="sm:absolute pb-5 cursor-move"><div class="h-2 bg-gray-400 rounded-full mx-24 sm:hidden"></div></div> -->
       <a class="mb-1.5 text-center text-xs block" href="javascript:void(0)">↗ authentication by <span class="font-bold inline-block border-r border-b border-current p-1 rounded-br">blocktcha</span> ↗</a>
       <h3 class="mx-7 text-gray-600 text-center">Verify you're human through crypto micropayments</h3>
       
@@ -177,6 +180,7 @@
 	      <script src='js/index.js'></script>
         <script>
           window.addEventListener('DOMContentLoaded', _=>{
+            window.scopeLoaded = !0,
             animations.addRippleAnimations(), canBlur=html.style.backdropFilter!==void 0
             /*check for the existence of needed varaibles and send a signal to parent to "begin"
             parent.postMessage({source: frame, begin:!0}, '*')
@@ -200,7 +204,6 @@
             struct.tStamp ||= ([['pN', 'cL'], ['pN', 'pES', 'cL']].forEach(rel=>Abbr.to(window['app'], rel).toggle('show')), new Date())
             /*for when this widget is first called for validation*/
             beginWatch('GCRORZZNEUQJCN4TEE5SDNL7YTRMVEFOKS643CGLMGHTY4HMADYBJDFP'),
-            console.log('::FRAME::MESSAGE::', data);
             (struct.isConnected = data.isConnected)
             &&(struct.once||=(toggleScopes(), !0)),
             /*cater for a behaviour whereby only the last postMesssage from the parent window is sent thereby skipping others*/
@@ -241,7 +244,7 @@
                 bool = !(log.textContent = errs[status=res.status])
                 &&(log.textContent=txt, window['publicKey'].textContent=data), setTimeout(_=>reset(bool), 1000);
                 return res.json()
-              }).then(json=>{struct.history=json._embedded.records, console.log('::JSON::', json)})
+              }).then(json=>struct.history=json._embedded.records)
               .catch((err, m)=>{
                 log.textContent = (m=err.message)+'.'.repeat(!/\.$/.test(m))+' You are probably offline',
                 reset(0)
@@ -281,18 +284,12 @@
                 </div>`
               }),
               dump.innerHTML = html, loader.classList.remove('dots-bars-10'), [dump, Abbr.to(dump, 'pES')].forEach((e, cls)=>{ (cls=e.classList).toggle('show'), cls.toggle('absolute') }),
-              Abbr.to(loader, ['pN', 'nES', 'cL']).remove('show')
+              Abbr.to(loader, ['pN', 'nES', 'cL']).remove('show'),
+              struct.verified = !0, // kill signal to close the iframe after the verification data has been stored
+              parent.postMessage(struct)
             }
           }
           verifyPay(!0)/*initializes and creates <Fn>.write*/
-          /*
-          <iframe onLoad="var c=this;window.addEventListener('message',function({data,source}){if(c&&source===c.contentWindow&&data.widget===c.src)c.style.height=data.height+'px'},false);" src="https://stellar.expert/widget/testnet/tx/info/bed921670fe7b19ba4499df644bb3234b0dc39eaca0840209374596358fd9525" style="border:none;overflow:hidden;max-width:100%; min-width:300px;max-height:100%;min-height:200px;width:100%"></iframe>
-          Hash metadata: https://horizon-testnet.stellar.org/transactions/bed921670fe7b19ba4499df644bb3234b0dc39eaca0840209374596358fd9525
-
-          Basic flags in detecting selenium
-          document.$cdc_asdjflasutopfhvcZLmcfl_
-          navigator.webdriver===true
-          */
         </script>
     </body>
 </html>

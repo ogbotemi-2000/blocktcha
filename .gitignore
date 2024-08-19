@@ -7,6 +7,7 @@ server.js
 blockchain/target
 completion.sh
 *.txt
+tmp
 
 
 

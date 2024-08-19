@@ -71,7 +71,7 @@ function relation(parent, child) {
       return node
     }
    };
-  Abbr.dict(['childNodes', 'classList', 'parentNode', 'previousElementSibling', 'nextElementSibling', 'nextSibling', 'firstChild', 'firstElementChild', 'lastChild', 'lastElementChild']);
+  Abbr.dict(['textContent', 'childNodes', 'classList', 'parentNode', 'previousElementSibling', 'nextElementSibling', 'nextSibling', 'firstChild', 'firstElementChild', 'lastChild', 'lastElementChild']);
 
 (function() {  
   function detectInconsistentEval() {
@@ -113,8 +113,8 @@ function relation(parent, child) {
     if(navigator.userAgent.includes("Headless") || !navigator.languages.length || navigator.webdriver|| document.$cdc_asdjflasutopfhvcZLmcfl_|| detectInconsistentEval()) return;
     /*events like click can't be so precisely fired by a human as to have the coordinates of the point clicked to be at the top right i.e 0. 0*/
     axes = ['clientX', 'clientY', 'pageX', 'pageY', 'screenX', 'screenY', 'x', 'y'].map(e=>ev[e]).filter(e=>e);
-    /*bots powered by selenium may fool browsers by making dispatched events seem user-prompted hence why isTrusted comes second*/
-    return !!(axes.length||ev.isTrusted||ev.detail)
+    /*bots powered by selenium may fool browsers by making dispatched events seem user-prompted hence why axes.length comes last*/
+    return !!(ev.isTrusted||ev.detail||axes.length)
   }
   window.byUserAgent = byUserAgent
 })()

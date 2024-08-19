@@ -1,3 +1,6 @@
-import config from './config.json' assert {type: "json"};
-
-console.log('::CONFIG::', config);
+let rmrf = require('../saas/rmrf-css');
+rmrf({
+    html: './framework.html',
+    css: 'css',
+    out: 'dist'
+})

@@ -1,24 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Cabin);
+/* @import url("https://fonts.googleapis.com/css?family=Cabin"); */ 
+
 @font-face {
     font-family: 'Fredoka';
-    src: url('../font.woff2') format('woff2');
+    src: url('../fonts/font.woff2') format('woff2');
 }
 
-
-
-
-
-/*end*/
-
 .font-fredoka {
-    font-family: 'Fredoka'
+    font-family: 'Fredoka';
 }
 .word-break {
 	word-wrap: break-word;
 }
 @font-face {
     font-family: 'regular-bookweb';
-    src: url('../regular-bookweb.woff') format('woff');
+    src: url('../fonts/regular-bookweb.woff') format('woff');
 }
 [disabled] {
   cursor: not-allowed;
