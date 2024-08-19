@@ -1,5 +1,5 @@
 (function(d,w,h,b) {
-	let url		 = '',
+	let url		 = 'https://blocktcha.vercel.app/',
 			crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
 			styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
