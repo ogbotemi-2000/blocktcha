@@ -2,29 +2,33 @@
 <html>
     <head>
         <title>Blocktcha Widget | Integration test</title>
-        <script src="widget.js" async defer></script>
+              <script src='app/widget.js' async defer></script>
         <meta charset="utf-8">
     </head>
 <body>
   <form>
     <input placeholder="your are glad they exist!">
   </form>
-  <form method="post" action="receive">
+  <form method="post" action="receive" id='formed'>
       <label>
         Enter text:
         <input placeholder="Enter some text" required>
       </label>
-      <div class='blocktcha_root' id='_blocktcha_root_' data_sitekey="MTkyLjE2OC4xLjE=" data-sitekey="MTI3LjAuMC4x">
-      <!-- strong yellow overlay, left to your discretion -->
-      <div></div>
-      <!-- free to customize text and button which should be left where it is at -->
-      I am human<button type="button">verify</button>
-    </div>
+
+      <div class='blocktcha_root' id='_blocktcha_root_' data-sitekey="bG9jYWxob3N0OjMwMDA=">
+        <!-- strong yellow overlay, left to your discretion -->
+        <div></div>
+        <!-- free to customize text and button which should be left where it is at -->
+        I am human<button type="button">verify</button>
+      </div>
+      
+
+
     <button>
         submit
     </button>
   </form>
-  <form>
+  <form style="height:100vh">
     <input placeholder="and they burn so bright once you can only wonder why">
   </form>
 

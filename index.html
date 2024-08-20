@@ -28,8 +28,8 @@ page = {
   },
   frame: txt=>{
     (txt = JSON.parse(txt)).error&&(notify.textContent = txt.message, notify.classList.replace('absolute', 'show')),
-    register.disabled=false, Abbr.to(register, ['fEC', 'cL']).replace('dots-1', 'absolute'),
-    console.log('::ACCOUNT DATA::', txt);
+    register.disabled=false, Abbr.to(register, ['fEC', 'cL']).replace('dots-1', 'absolute')
+    
     if(txt.uuid) page.asId(txt), account.classList.add('show');
   },
   valid: (form, fields)=>fields.filter(field=>form[field].checkValidity()).length==fields.length,
@@ -77,7 +77,7 @@ page = {
     .draw-stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: draw-stroke 2s ease-out forwards;
+    animation: draw-stroke 2s ease-out infinite;
 }
 @keyframes draw-stroke {
     0% {
@@ -197,7 +197,7 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 <div class="m-auto inline-block sm:w-60 text-center w-full [&>*]:inline-block [&>*]:align-middle align-top mb-2"><div class="p-2 relative">
 <svg viewBox="0 0 640 512" class="w-10 inline-block"><path d="M32,224H64V416H32A31.96166,31.96166,0,0,1,0,384V256A31.96166,31.96166,0,0,1,32,224Zm512-48V448a64.06328,64.06328,0,0,1-64,64H160a64.06328,64.06328,0,0,1-64-64V176a79.974,79.974,0,0,1,80-80H288V32a32,32,0,0,1,64,0V96H464A79.974,79.974,0,0,1,544,176ZM264,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,264,256Zm-8,128H192v32h64Zm96,0H288v32h64ZM456,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,456,256Zm-8,128H384v32h64ZM640,256V384a31.96166,31.96166,0,0,1-32,32H576V224h32A31.96166,31.96166,0,0,1,640,256Z"></path></svg>
 <svg viewBox="0 0 512 512" class="absolute top-0 inset-0">
-                <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z" stroke="orangered" stroke-width="20" class="draw-strokes" pathLength="1" fill="transparent"></path>
+                <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z" stroke="orangered" stroke-width="20" class="draw-stroke" pathLength="1" fill="transparent"></path>
 
             </svg></div>
 
@@ -208,7 +208,7 @@ successfully interact with say an extension like Metamask or Freighter wallet in
                 <path strokedashoffset="0" fill="transparent" pathLength="1" class="draw-stroke" stroke-width="20" stroke="orangered" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
 
             </svg></div>
-<br><button class="ripple mt-5 p-3 px-4 bg-yellow-500 font-semibold rounded-full" data-persist-ripple="">click to try detection</button>    
+<br><button style="overflow:visible" class="relative ripple mt-5 p-3 px-4 bg-yellow-500 font-semibold rounded-full" data-persist-ripple="">click to try detection</button>    
 </div>
 <pre class="text-sm text-left w-full text-gray-700 inline-block whitespace-normal sm:w-72 space-x-3">{<br><span class="text-red-500">clientX:</span> 0
   <span class="text-red-500">clientY:</span> 0
@@ -281,14 +281,14 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 
 <input class="absolute hidden" name="uuid">
 
-<button class="block bg-yellow-500 p-3 px-6 mt-1 ripple relative" type="submit" onclick="let pN; byUserAgent(event)&&page.valid(pN=this.parentNode, ['label', 'domain'])&&(page._forms_[pN.getAttribute('data-id')](), this.disabled=true, Abbr.to(this, ['fEC', 'cL']).replace('absolute', 'dots-1'), document.forms[0])" id="register">submit<i class="absolute inline-block p-2.5 align-middle ml-2"></i></button></form><main class="text-left tooltip no-hover no-focus no-focus-within absolute h-1/2 rounded-3xl left-2 right-2 sm:top-1/2 bg-yellow-100 md:w-3/4 mx-auto shadow slide-y p-5 sm:p-10 bottom-24 -mt-24 sm:pt-5 md:pt-10 lg:w-2/3" id="account">
+<button class="block bg-yellow-500 p-3 px-6 mt-1 ripple relative" type="submit" onclick="let pN; byUserAgent(event)&&page.valid(pN=this.parentNode, ['label', 'domain'])&&(pN.domain.value=pN.domain.value.replace(/http(s|):\/\//, ''), setTimeout(_=>{page._forms_[pN.getAttribute('data-id')](), this.disabled=true, Abbr.to(this, ['fEC', 'cL']).replace('absolute', 'dots-1')}))" id="register">submit<i class="absolute inline-block p-2.5 align-middle ml-2"></i></button></form><main class="text-left tooltip no-hover no-focus no-focus-within absolute h-1/2 rounded-3xl left-2 right-2 sm:top-1/2 bg-yellow-100 md:w-3/4 mx-auto shadow slide-y p-5 sm:p-10 bottom-24 -mt-24 sm:pt-5 md:pt-10 lg:w-2/3" id="account">
     <button class="ripple px-10 absolute rounded-t-3xl p-4 fa fa-times right-0 -top-6 bg-inherit" onclick="Abbr.to(this, ['pN', 'cL']).remove('show')"></button>
 <button class="px-3 relative p-2 rounded-full inline-block" onclick="copyTextToClipboard(Abbr.to(this, ['nES', 'tC']))">
 <i class="relative fa fa-copy text-gray-700 text-lg"></i><div class="out decorate inset-0 absolute" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div>
 <div class="bg-yellow-300 p-2 absolute tooltip no-hover to-top" style="--arrow-size:5px;--x: -50%;--y: -3px;">copied</div></button> <code class="mx-3 align-middle font-semibold text-sm py-1 truncate inline-block" style="max-width:65%;" id="uuid">db488041-dc81-44ff-9937-a33fa07db413</code><button class="px-3 rounded-full border border-current p-2 relative"><i class="fa fa-exclamation"></i>
 <p class="border border-current p-2 bg-yellow-100 w-56 tooltip to-left absolute text-sm" style="--arrow-size:5px">your account id is used as your password - to view and modify sites you've registered. Keep it safe</p></button><button class="relative mt-2 float-right p-2 border text-yellow-800 border-yellow-500 ripple" onclick="copyTextToClipboard(Abbr.to(this, ['nES', 'tC']).replace(/\.\.\./g, ''))" style="overflow:visible;">copy site key template<div class="bg-yellow-300 p-2 absolute tooltip no-hover to-top" style="--arrow-size:5px;--x: -50%;--y: -3px;">copied</div></button>
-<pre class="leading-5 whitespace-pre-wrap mt-1 text-xs">...<br>&lt;script src='https://blocktcha.vercel.app/widget.js' async defer&gt;&lt;/script&gt;
-...<br>&lt;div class='blocktcha_root'&nbsp;id='_blocktcha_root_'<strong>data-sitekey="</strong><code id="key" class="font-semibold"></code>"&gt;
+<pre class="leading-5 whitespace-pre-wrap mt-1 text-xs">...<br>&lt;script src='https://blocktcha.vercel.app/app/widget.js' async defer&gt;&lt;/script&gt;
+...<br>&lt;div class='blocktcha_root' id='_blocktcha_root_' <strong>data-sitekey="</strong><code id="key" class="font-semibold"></code>"&gt;
   &lt;!-- strong yellow overlay, left to your discretion --&gt;
   &lt;div&gt;&lt;/div&gt;
   &lt;!-- free to customize text and button which should be left where it is at --&gt;

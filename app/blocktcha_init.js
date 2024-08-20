@@ -1,5 +1,5 @@
 (function() {
-  let struct={retries:0, source:'parent'}, mthd, requestAddress, stored={}, widget, frameHs = [410, 420];
+  let struct={retries:0, source:'parent'}, mthd, requestAddress, stored={}, widget, frameHs = [420, 400];
 	function init(node, overlay) {
 		widget = _blocktcha_root_.querySelector('iframe'), init.inited||=!0,
 		widget.classList.add('show'), (overlay = _blocktcha_root_.querySelector('div'))&&overlay.classList.add('opacity-10');
