@@ -5,7 +5,7 @@ module.exports = async function(request, response) {
   let { label, domain, uuid } = request.body;
   request.method==='GET' ? response.send('&lt;Not allowed&gt;')
   : store.read(domain).then(data=>{
-
+    
       response.json({ error: "::DUPLICATE::", message: 'The provided domain has already been registered in this app' })
     }).catch(err=>password.hash(domain).then((hashed, data, history)=>{
       uuid||=password.uuid(), data = { domain, label, uuid, key: btoa(domain), secret: hashed },

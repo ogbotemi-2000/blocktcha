@@ -1,5 +1,5 @@
 // ../node_modules/
-import { Contract, SorobanRpc, TransactionBuilder, Networks, BASE_FEE, Keypair, nativeToScVal } from '../node_modules/@stellar/stellar-sdk';
+import { Contract, SorobanRpc, TransactionBuilder, Networks, BASE_FEE, Keypair, nativeToScVal } from '@stellar/stellar-sdk';
 import config from '../config.json';// assert {type: "json"};
 
 let kP     = Keypair.fromSecret(config.SECRET_KEY),

@@ -26,24 +26,33 @@ page = {
     [(t.nodes ||=qsa('article section.tooltip'))[t._i||=0], t.nodes[_i=i]].forEach(e=>e.classList.toggle('show')),
     t.vals||=[]
   },
-  frame: txt=>{
-    (txt = JSON.parse(txt)).error&&(notify.textContent = txt.message, notify.classList.replace('absolute', 'show')),
-    register.disabled=false, Abbr.to(register, ['fEC', 'cL']).replace('dots-1', 'absolute')
-    
-    if(txt.uuid) page.asId(txt), account.classList.add('show');
+  frame: (txt, notices, notice, bool, frag)=>{
+    fetchHistory.textContent = 'fetch history', bool=+!!(txt = JSON.parse(txt)).history, notices = [notify, noUuid],
+    txt.error&&((notice=notices[bool]).textContent = txt.message, notice.classList.replace('absolute', 'show')),
+    frag = document.createDocumentFragment(),
+    [register, fetchHistory][bool].disabled=false, Abbr.to(register, ['fEC', 'cL']).replace('dots-1', 'absolute');
+    if(!txt.error) bool?(stored.firstElementChild.innerHTML='', (page.history=txt).stored.forEach(el=>{
+      frag.appendChild(crE('li', [{name:'class', value:'hover:bg-white rounded-xl'}], {innerHTML:`<code><i class="fa fa-tag mr-1 inline-block align-middle"></i>${el.label}</code><hr class="mx-3 inline-block align-middle border p-px border-current rounded-full"><span class="font-semibold"><i class="fa fa-globe mr-1.5 inline-block"></i>${el.domain}</span>`}))
+    }), stored.firstElementChild.appendChild(frag), stored.classList.add('show')):page.asId(txt), accountId.textContent = document.forms[0].uuid.value;
   },
   valid: (form, fields)=>fields.filter(field=>form[field].checkValidity()).length==fields.length,
-  asId: (res, flag, nodes, forms)=>{
-    (nodes = slice(document.forms).map(form=>form.uuid)).push(accountId);
+  asId: (res, flag, nodes, forms, arr)=>{
+    account.classList.add('show'), (nodes = slice(document.forms).map(form=>form.uuid)).push(accountId);
     if(flag) return;
     ['value', 'textContent'].forEach(writes=>nodes.forEach(node=>node[writes] = res.uuid)),
-    ['uuid', 'secret', 'key'].forEach(str=>window[str].textContent = res[str])
+    ['uuid', 'secret', 'key', 'HITS'].forEach(str=>window[str].textContent = res[str]), arr = ['show', 'absolute'],
+    res.HITS===void 0&&arr.reverse(),
+    Abbr.to(window['HITS'], ['pN','cL']).replace(arr[1], arr[0])
   }
 }
 </script>
 <!-- style tag is read/write for animation on page -->
 <style>.ca4513da:not(.flex-col)>div{--y:1}.ca4513da.flex-col>div{--x:1}</style>
-<style>
+<style>[disabled] {
+  pointer-events: auto;
+  cursor: not-allowed;
+}
+
 .dots-1 {
   --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
   background: 
@@ -162,7 +171,7 @@ page = {
 <hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Timed verification of users
 <hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Blockchain for immutability<hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Privacy via annonymity
 <div class="sm:mt-3.5 text-right sm:absolute sm:right-0">
-    <a class="sm:border-r-0 sm:border-l-0 sm:border-t-0 border-gray-400 sm:border-current border-2 mt-5 p-2 rounded-full px-4 hover:bg-gray-200 text-xs bg-white" href="framework.html">interact with a demo</a>
+    <a class="sm:border-r-0 sm:border-l-0 sm:border-t-0 border-gray-400 sm:border-current border-2 mt-5 p-2 rounded-full px-4 hover:bg-gray-200 text-xs bg-white" href="test.html">interact with a demo</a>
 </div></div></section></article>
 
 <aside class="sm:h-96 h-1/4 flex ca4513da [&>*]:relative relative flex-1 z-1 w-full"><div class="flex-1 bg-yellow-200" style="--index: 0;"><div class="font-mono w-6 mt-4">{amount: '20.0000000'}</div></div>
@@ -180,7 +189,7 @@ page = {
 <section class="relative bg-white">
     <article class="w-full text-center [&>*]:text-left [&>*]:inline-block [&>*]:align-middle inline-block"><p class="text-xl sm:w-96 font-semibold">A rethink on just what bots can and <code class="font-capture">cannot</code> do</p>
 
-<div class="sm:border-t-0 sm:border-l sm:mt-0 mt-5 px-4 p-3 inline-block border-t border-gray-400">I am human <button class="relative ripple ml-3 rounded-full p-3 px-6 border-2 border-gray-300">verify</button><a class="absolute slide-y tooltip no-hover block text-sm underline" target="_blank" href="framework.html">Wanna verify? Open in a new tab</a>
+<div class="sm:border-t-0 sm:border-l sm:mt-0 mt-5 px-4 p-3 inline-block border-t border-gray-400">I am human <button class="relative ripple ml-3 rounded-full p-3 px-6 border-2 border-gray-300">verify</button><a class="absolute slide-y tooltip no-hover block text-sm underline" target="_blank" href="test.html">Wanna verify? Open in a new tab</a>
 </div><br>
 
 <h2 class="relative text-6xl font-mono inline-block py-10 px-4 rellax duration-300 ease-out" data-rellax-desktop-speed="-1" data-rellax-tablet-speed="0" data-rellax-speed="0"><span class="border-current">b</span><span class="border-current">l</span><span class="border-current">o</span><span class="border-current">c</span><span class="border-current">k</span><span class="border-current">t</span><span class="border-current">c</span><span class="border-current">h</span><span class="border-current">a</span></h2>
@@ -257,13 +266,17 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 <button class="sm:absolute px-6 p-3 border-r border-b border-current ripple left-0 top-0" onclick="Abbr.to(this, [{2:'pN'}, 'cL']).remove('show')"><i class="fa fa-arrow-left"></i> back</button></div>
 <section class="sm:mt-8 mt-4 relative inline-block align-middle sm:w-1/2 md:w-1/3 font-mono">
     #Account id: <code class="inline-block font-semibold" id="accountId">&lt;Unavailable&gt;</code>
-<main class="mt-2 font-sans text-sm h-full inline-block">Sites registered for account
-<form class="mt-1" onsubmit="return false;" target="response">
-        <input class="bg-transparent placeholder-gray-700 p-3 border-b border-current w-full" placeholder="provide your unique account id here" required="" oninput="page.uuid = document.forms[1].uuid.value = this.value" name="uuid">
-<button class="mt-2 mb-1.5 border-gray-500 border-2 rounded-full p-2 px-4 float-right ripple relative">fetch history</button>
+<main class="mt-2 font-sans text-sm h-full inline-block relative">Sites registered for account
+<aside class="text-sm tooltip no-hover no-focus slide-y text-red-800 absolute" id="noUuid"></aside>
+<form class="mt-1" onsubmit="event.preventDefault(); return false;" target="response" method="POST" action="api/history">
+        <input class="bg-transparent placeholder-gray-700 p-3 border-b border-current w-full" placeholder="provide your unique account id here" required="" oninput="page.uuid = document.forms[1].uuid.value = this.value, noUuid.classList.replace('show', 'absolute')" name="uuid">
+<button class="mt-2 mb-1.5 bg-gray-200 rounded-full p-2.5 px-4 float-right ripple relative" onclick="if(!byUserAgent(event)) return; let pN=this.parentNode; page.valid(pN, ['uuid'])&&(this.textContent='fetching history...', page._forms_[pN.getAttribute('data-id')](), this.disabled=true)" id="fetchHistory">fetch history</button>
     </form>
 <p class="clear-both text-sm">Please ignore this input field and proceed to the next section if you can't make tails out of it yet
-</p></main>
+</p>
+<aside class="-inset-1 absolute tooltip no-hover no-focus no-focus-within -slide-y bg-yellow-100 rounded-3xl p-5 overflow-scroll" id="stored">
+  <ul class="font-mono [&>*]:p-2 space-y-1.5 cursor-pointer" onclick="let ch=slice(this.children), path=slice(event.composedPath()), i, li=path.find((e, _i, bool)=>(bool=e.tagName==='LI')&&(i=_i, bool)); ch[i]&&page.asId(page.history.stored[i])"></ul><button class="rounded-tr-xl border-current border-l border-b fa fa-times absolute top-0 right-0 p-3.5" onclick="this.parentNode.classList.remove('show')"></button>
+</aside></main>
 </section><hr class="inline-block align-middle sm:w-1 sm:h-1/4 border-0 bg-yellow-500 m-3 w-1/2 h-1">
 
 <form class="inline-block align-middle w-full sm:w-1/3 compact md:w-1/2" method="POST" action="api/register" onsubmit="event.preventDefault(); return false;" oninput="event.preventDefault()" target="response">
@@ -282,7 +295,10 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 <input class="absolute hidden" name="uuid">
 
 <button class="block bg-yellow-500 p-3 px-6 mt-1 ripple relative" type="submit" onclick="let pN; byUserAgent(event)&&page.valid(pN=this.parentNode, ['label', 'domain'])&&(pN.domain.value=pN.domain.value.replace(/http(s|):\/\//, ''), setTimeout(_=>{page._forms_[pN.getAttribute('data-id')](), this.disabled=true, Abbr.to(this, ['fEC', 'cL']).replace('absolute', 'dots-1')}))" id="register">submit<i class="absolute inline-block p-2.5 align-middle ml-2"></i></button></form><main class="text-left tooltip no-hover no-focus no-focus-within absolute h-1/2 rounded-3xl left-2 right-2 sm:top-1/2 bg-yellow-100 md:w-3/4 mx-auto shadow slide-y p-5 sm:p-10 bottom-24 -mt-24 sm:pt-5 md:pt-10 lg:w-2/3" id="account">
-    <button class="ripple px-10 absolute rounded-t-3xl p-4 fa fa-times right-0 -top-6 bg-inherit" onclick="Abbr.to(this, ['pN', 'cL']).remove('show')"></button>
+    
+<aside class="bg-inherit rounded-t-3xl absolute bottom-full right-0 -mb-5">
+    <p class="pl-4 font-capture tooltip no-hover no-focus slide absolute inline-block">HITS: <code id="HITS"></code></p>
+<button class="hover:bg-yellow-300 ml-2 ripple px-10 rounded-t-3xl p-4 fa fa-times bg-inherit" onclick="Abbr.to(this, [{2:'pN'}, 'cL']).remove('show')"></button></aside>
 <button class="px-3 relative p-2 rounded-full inline-block" onclick="copyTextToClipboard(Abbr.to(this, ['nES', 'tC']))">
 <i class="relative fa fa-copy text-gray-700 text-lg"></i><div class="out decorate inset-0 absolute" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div>
 <div class="bg-yellow-300 p-2 absolute tooltip no-hover to-top" style="--arrow-size:5px;--x: -50%;--y: -3px;">copied</div></button> <code class="mx-3 align-middle font-semibold text-sm py-1 truncate inline-block" style="max-width:65%;" id="uuid">db488041-dc81-44ff-9937-a33fa07db413</code><button class="px-3 rounded-full border border-current p-2 relative"><i class="fa fa-exclamation"></i>
@@ -301,7 +317,7 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 </main>
 <iframe onload="let txt=['textContent', 'innerHTML'].map(p=>this.contentWindow.document.body[p]); if(txt.filter(e=>e).length) page.frame(txt[0])" id="response" name="response" class="absolute h-1 w-1 invisible pointer-events-none top-0"></iframe>
 </aside><script>w_Ev('onbeforeunload')(_=>"Prevents unintentional reloads of the page");
-let DOMLoaded, vars=[];
+let DOMLoaded, vars=[], crE = (tag, attrs, values)=>(tag = document.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag);
 vars[1] =_=>{
   if(DOMLoaded) vars[0].forEach(n=>n.classList[cLs(innerWidth>=640)]('flex-col'));
 },
