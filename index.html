@@ -22,8 +22,9 @@ page = {
     t.st.textContent = txt.replace(new RegExp(dir+":[^,}]+"), dir+':'+v)
   },
   to: function(txt, t, i,) {
-    t = this.to, t.txts||=[];/*txts will be made available in DOMContentLoaded*/ if((i=t.txts.indexOf(txt))===-1) return;
-    [(t.nodes ||=qsa('article section.tooltip'))[t._i||=0], t.nodes[_i=i]].forEach(e=>e.classList.toggle('show')),
+    this.animBars(1.5), setTimeout(_=>this.animBars(1), 0.7e3),
+    t = this.to, t.txts||=[];/*txts will be made available in DOMContentLoaded*/ if((i=t.txts.indexOf(txt))===-1||i>1) return;
+    [(t.nodes ||=qsa('article section.tooltip'))[t._i||=0], t.nodes[t._i=i]].forEach(e=>e.classList.toggle('show')),
     t.vals||=[]
   },
   frame: (txt, notices, notice, bool, frag)=>{
@@ -128,7 +129,7 @@ page = {
 			
 <nav class="w-full bottom-0 fixed [&>*]:align-middle [&>*]:inline-block z-10 sm:text-center px-2 pb-5">
 
-<div id="growShrink" class="text-sm rounded-full" data-classname="relative" onclick="console.log(event); let txt, a = [].slice.call(event.composedPath(), 0, 3).find(e=>e.tagName==='A'); a&&page.to(a.textContent.trim().toLowerCase())">
+<div id="growShrink" class="text-sm rounded-full" data-classname="relative" onclick="let txt, a = [].slice.call(event.composedPath(), 0, 3).find(e=>e.tagName==='A'); a&&page.to(a.textContent.trim().toLowerCase())">
       <div style="--px:0.6em; --py:0.5em; --tw-bg-opacity:calc(var(--bg-opacity-pad) + 0.3)" class="[&>*]:align-middle rounded-inherit [&>*]:rounded-inherit inline-block [&>*]:p-xy bg-gray-200 backdrop-filter backdrop-blur p-1 md:py-3 sm:px-2">
         <a href="#rules" class="bg-yellow-500 hover:bg-yellow-500 relative"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">The big idea</span></a><a href="#rules" class="hover:bg-yellow-500 relative fluid base:show"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Motivation</span></a><a href="#rules" class="hover:bg-yellow-500 relative fluid sm:show"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Scope</span></a><a href="#roadmap" class="fluid md:show hover:bg-yellow-500"><div class="out decorate inset-0 absolute tooltip" style="z-index: auto"><div class="bg-yellow-500 inset-0 absolute p-0 rounded-full duration-300 ease-out" style="--tw-bg-opacity: 0.5; --tw-scale-x:1.2; --tw-scale-y:var(--tw-scale-x);"></div></div><span class="relative">Roadmap</span></a>
         
@@ -171,7 +172,7 @@ page = {
 <hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Timed verification of users
 <hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Blockchain for immutability<hr class="my-1.5"><i class="fa fa-user-clock text-lg text-yellow-700"></i> • Privacy via annonymity
 <div class="sm:mt-3.5 text-right sm:absolute sm:right-0">
-    <a class="sm:border-r-0 sm:border-l-0 sm:border-t-0 border-gray-400 sm:border-current border-2 mt-5 p-2 rounded-full px-4 hover:bg-gray-200 text-xs bg-white" href="test.html">interact with a demo</a>
+    <a class="sm:border-r-0 sm:border-l-0 sm:border-t-0 border-gray-400 sm:border-current border-2 mt-5 p-2 rounded-full px-4 hover:bg-gray-200 text-xs bg-white" href="test.html" target="_blank">interact with a demo</a>
 </div></div></section></article>
 
 <aside class="sm:h-96 h-1/4 flex ca4513da [&>*]:relative relative flex-1 z-1 w-full"><div class="flex-1 bg-yellow-200" style="--index: 0;"><div class="font-mono w-6 mt-4">{amount: '20.0000000'}</div></div>
@@ -187,7 +188,7 @@ page = {
 
 			    <hr class="relative bg-white h-20 border-0" id="alternative">
 <section class="relative bg-white">
-    <article class="w-full text-center [&>*]:text-left [&>*]:inline-block [&>*]:align-middle inline-block"><p class="text-xl sm:w-96 font-semibold">A rethink on just what bots can and <code class="font-capture">cannot</code> do</p>
+    <article class="w-full text-center [&>*]:text-left [&>*]:inline-block [&>*]:align-middle inline-block"><p class="text-xl sm:w-96 font-semibold sm:mx-0 mx-8">A rethink on just what bots can and <code class="font-capture">cannot</code> do</p>
 
 <div class="sm:border-t-0 sm:border-l sm:mt-0 mt-5 px-4 p-3 inline-block border-t border-gray-400">I am human <button class="relative ripple ml-3 rounded-full p-3 px-6 border-2 border-gray-300">verify</button><a class="absolute slide-y tooltip no-hover block text-sm underline" target="_blank" href="test.html">Wanna verify? Open in a new tab</a>
 </div><br>
@@ -274,8 +275,8 @@ successfully interact with say an extension like Metamask or Freighter wallet in
     </form>
 <p class="clear-both text-sm">Please ignore this input field and proceed to the next section if you can't make tails out of it yet
 </p>
-<aside class="-inset-1 absolute tooltip no-hover no-focus no-focus-within -slide-y bg-yellow-100 rounded-3xl p-5 overflow-scroll" id="stored">
-  <ul class="font-mono [&>*]:p-2 space-y-1.5 cursor-pointer" onclick="let ch=slice(this.children), path=slice(event.composedPath()), i, li=path.find((e, _i, bool)=>(bool=e.tagName==='LI')&&(i=_i, bool)); ch[i]&&page.asId(page.history.stored[i])"></ul><button class="rounded-tr-xl border-current border-l border-b fa fa-times absolute top-0 right-0 p-3.5" onclick="this.parentNode.classList.remove('show')"></button>
+<aside class="-inset-1 absolute tooltip no-hover no-focus no-focus-within -slide-y bg-yellow-100 rounded-3xl p-5" id="stored">
+  <ul class="h-full overflow-scroll font-mono [&>*]:p-2 space-y-1.5 cursor-pointer" onclick="let cur=this.querySelector('.bg-yellow-300'), ch=slice(this.children), path=slice(event.composedPath()), li=path.find(e=>e.tagName==='LI'); li&&([cur, li].forEach(e=>e&&e.classList.toggle('bg-yellow-300')), page.asId(page.history.stored[ch.indexOf(li)]))"></ul><button class="ripple rounded-tr-xl border-current border-l border-b fa fa-times absolute top-0 right-0 p-3.5" onclick="this.parentNode.classList.remove('show')"></button>
 </aside></main>
 </section><hr class="inline-block align-middle sm:w-1 sm:h-1/4 border-0 bg-yellow-500 m-3 w-1/2 h-1">
 

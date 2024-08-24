@@ -2,76 +2,76 @@
 	let url		 = '',//'https://blocktcha.vercel.app/',
 		crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
-			styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
+		styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
 				textContent: `/*styles used in widget*/
 .blocktcha_root.text-xs {
     font-size: .75rem;
     line-height: 1rem;
 }
 
-	 .blocktcha_root > * {
-	    box-sizing: border-box;
-	    border-color: rgb(229,231,235);
-	 }
+.blocktcha_root > * {
+box-sizing: border-box;
+border-color: rgb(229,231,235);
+}
+.blocktcha_root {
+	padding: 0.5rem;
+	font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"	
+}
+.blocktcha_root > input {
+	visibility: hidden;
+	position: absolute;
+	pointer-events: none;
+}
+.blocktcha_root > i {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+}
+.blocktcha_root > div {
+	z-index:99999;
+	left:0px;top:0px;bottom:0px;right:0px;
+	position: fixed;
+	opacity: 0;
+	pointer-events: none;
+}
+.blocktcha_root > button {
+	border: 2px solid rgb(107,114,128);
+	padding: 0.5rem 1.25rem;
+	position: relative;
+	border-radius: 100px;
+	margin: 0px 1rem;
+	cursor: pointer;
+}
+.blocktcha_root > iframe {
+	padding-top: 1.25rem;
+	overflow: hidden;
+	width: 80%;
+	left: 0px;
+	border-width: 2px;
+	position: absolute;
+	border-radius: 1.5rem;
+}
+@media(min-width:640px) {
 	.blocktcha_root {
-		padding: 0.5rem;
-		font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
-	}
-	.blocktcha_root > input {
-	  visibility: hidden;
-		position: absolute;
-		pointer-events: none;
-	}
-	.blocktcha_root > i {
-	  display: inline-block;
 		position: relative;
-		vertical-align: middle;
-	}
-	.blocktcha_root > div {
-	  z-index:99999;
-		left:0px;top:0px;bottom:0px;right:0px;
-		position: fixed;
-		opacity: 0;
-		pointer-events: none;
-	}
-	.blocktcha_root > button {
-		border: 2px solid rgb(107,114,128);
-		padding: 0.5rem 1.25rem;
-		position: relative;
-		border-radius: 100px;
-		margin: 0px 1rem;
-		cursor: pointer;
 	}
 	.blocktcha_root > iframe {
-		padding-top: 1.25rem;
-		overflow: hidden;
-		width: 80%;
-		left: 0px;
-		border-width: 2px;
-		position: absolute;
-		border-radius: 1.5rem;
+		width: 24rem; 
 	}
-	@media(min-width:640px) {
-	  .blocktcha_root {
-		  position: relative;
-		}
-		.blocktcha_root > iframe {
-		  width: 24rem; 
-		}
-	}
-	/*styles related to compositing */
-	.blocktcha_root > iframe {
-	  background: white;
-	}
-	/*utilities*/
-	.tooltip {
-   --delay: 0s;
-    font-family: inherit;
-    transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
-	--arrow-x: 0%;
-	--arrow-y: 0%;
-    --arrow-color: currentcolor;
-	--arrow-degree: 0deg;
+}
+/*styles related to compositing */
+.blocktcha_root > iframe {
+	background: white;
+}
+/*utilities*/
+.tooltip {
+--delay: 0s;
+font-family: inherit;
+transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
+--arrow-x: 0%;
+--arrow-y: 0%;
+--arrow-color: currentcolor;
+--arrow-degree: 0deg;
 }
 .tooltip:not(.vanish-hover) {
   visibility: hidden;
@@ -131,9 +131,12 @@
 }
 `}),
 	script = crE('script', [{name:'src', value:`${url}app/blocktcha_init.js`}]),
-	utils  = crE('script', [{name:'src', value:`${url}js/utils.js`}]);
+	utils  = crE('script', [{name:'src', value:`${url}js/utils.js`}]),
+	hqs=s=>h.querySelector(s);
 	[utils, script, wallet].forEach(node=>h.appendChild(node)),
+	!hqs('meta[charset=utf-8]')&&hqs('title').after(crE('meta', [{name:'charset', value:'utf-8'}])),
  	h.prepend(styles);
+	// !window.freigherApi&&wallet.replaceWith(crE('script', [{name:'src', value:'js/stellar-sdk.js'}]));
 
 	function scopeLoaded(scope, callback, document, t) {
 		document = scope.document || scope.contentDocument,
@@ -150,7 +153,7 @@
 	}
 	
 	scopeLoaded(w, function(root, frame, domain, attr, overlay, loader, button) {
-		domain = w.location.origin.replace(/http(s|):\/\//, '');
+		domain = w.location.host;
 		if(!(root = w['_blocktcha_root_'])) return;
 		if(!(attr = root.getAttribute('data-sitekey'))) { destroy('No domain specified for widget'); return; }
 		if((attr=atob(attr)) != domain) { destroy('Registered domain and site domain are not the same'); return;}
