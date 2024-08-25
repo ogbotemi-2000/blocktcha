@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@stellar/stellar-sdk": "^12.1.0",
+    "@vercel/kv": "^2.0.0",
     "eventsource": "^2.0.2"
   },
   "devDependencies": {

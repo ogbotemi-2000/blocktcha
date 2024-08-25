@@ -1,5 +1,7 @@
+let { kv } = require('@vercel/kv');
+
 function format(str) {
-    return str.replace(/,/g, e=>e+'\n\t').replace(/\{|\}/g, e=>'\n'.repeat(e=='}')+e+'\n\t'.repeat(e=='{'))
+    return str&&str.replace(/,/g, e=>e+'\n\t').replace(/\{|\}/g, e=>'\n'.repeat(e=='}')+e+'\n\t'.repeat(e=='{'))
 }
 /** start of functionality for storing data on Vercel serveless */
 let fs     = require('fs'),
@@ -8,15 +10,20 @@ let fs     = require('fs'),
     dir    = `${/win/i.test(require('os').platform())?'.':''}/tmp/`,
     path   = require('path'),
     store  = {
-			read: id =>new Promise((res, rej)=>fs.readFile(dir+id.replace(/\\|\/|"|\?|\:|\*|\<|\>|\|/g, '_')+'.txt', (err, buf)=>{
+			read: id =>new Promise((res, rej)=>kv.get(id).then(value=>value?res(value):rej(value)))
+				/*new Promise((res, rej)=>fs.readFile(dir+id.replace(/\\|\/|"|\?|\:|\*|\<|\>|\|/g, '_')+'.txt', (err, buf)=>{
 				if(err) rej(err);
 				else res(buf.toString())
 				})
-			),
+			)*/,
 			write: function(data, cb, id) {
 				/** removes wildcards to properly serialize URLS as file names */
-				id &&=id.replace(/\\|\/|"|\?|\:|\*|\<|\>|\|/g, '_'),
+				/*id &&=id.replace(/\\|\/|"|\?|\:|\*|\<|\>|\|/g, '_'),
 				fs.writeFile(dir+(id||=uuid())+'.txt', data, _=>cb(id))
+				*/
+				kv.set(id||=uuid(), data).then(_=>{
+					cb(id)
+				})
 			},
 			rm 
 		};

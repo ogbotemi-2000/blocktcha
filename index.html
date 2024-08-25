@@ -317,7 +317,7 @@ successfully interact with say an extension like Metamask or Freighter wallet in
 
 </main>
 <iframe onload="let txt=['textContent', 'innerHTML'].map(p=>this.contentWindow.document.body[p]); if(txt.filter(e=>e).length) page.frame(txt[0])" id="response" name="response" class="absolute h-1 w-1 invisible pointer-events-none top-0"></iframe>
-</aside><script>w_Ev('onbeforeunload')(_=>"Prevents unintentional reloads of the page");
+</aside><script>debug&&w_Ev('onbeforeunload')(_=>"Prevents unintentional reloads of the page");
 let DOMLoaded, vars=[], crE = (tag, attrs, values)=>(tag = document.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag);
 vars[1] =_=>{
   if(DOMLoaded) vars[0].forEach(n=>n.classList[cLs(innerWidth>=640)]('flex-col'));
