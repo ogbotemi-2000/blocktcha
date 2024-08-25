@@ -113,7 +113,7 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 }
 
 .bars-7 {
-  padding: 8px;
+  padding: 10px;
   --c:no-repeat repeating-linear-gradient(90deg,#000 0 calc(100%/7),#0000 0 calc(200%/7));
   background: 
     var(--c),
