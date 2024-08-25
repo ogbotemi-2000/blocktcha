@@ -1,5 +1,5 @@
 (function(d,w,h,b) {
-	let url		 = 'https://blocktcha.vercel.app/',
+	let url	   =  'https://blocktcha.vercel.app/',
 		crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
 		styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
@@ -138,12 +138,14 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
  	h.prepend(styles);
 	// !window.freigherApi&&wallet.replaceWith(crE('script', [{name:'src', value:'js/stellar-sdk.js'}]));
 
-	function scopeLoaded(scope, callback, document, t) {
-		document = scope.document || scope.contentDocument,
+	function scopeLoaded(scope, callback, doc, t) {
+		// console.log(scope, )
+		doc = scope.document || scope.contentDocument,
 		t=scopeLoaded, clearInterval(t.intrvl),
-		t.intrvl =setInterval(function() {
-			if(document.readyState ==='complete') clearInterval(t.intrvl), callback();
-		})
+		console.log('::DOCUMENT::', doc),
+		doc&&(t.intrvl =setInterval(function() {
+			if(doc.readyState ==='complete') clearInterval(t.intrvl), callback();
+		}))
 	}
 	function destroy(html, flag, root, frame) {
 		root = w['_blocktcha_root_'], !flag&&root.classList.add('text-xs'),
@@ -177,7 +179,6 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 					_blocktcha_root_.destroy(`Verified as human<br><a target="_blank" href="https://stellar.expert/explorer/testnet/tx/${values[0]}">Here is your receipt ↗</a>`, true);
 				})
 			},
-
 			scopeLoaded(frame, _=>setTimeout(_=>{
 				loader.remove(),
 				root.querySelector('button').onclick=function(event) {

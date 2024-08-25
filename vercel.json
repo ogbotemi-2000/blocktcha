@@ -1,0 +1,10 @@
+{
+    "cleanUrls": true,
+    "source": "/widget",
+    "headers": [
+      {
+        "key": "Access-Control-Allow-Origin",
+        "value": "*"
+      }
+    ]
+  }
