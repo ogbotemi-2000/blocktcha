@@ -1,5 +1,5 @@
 (function(d,w,h,b) {
-	let url	   =  'https://blocktcha.vercel.app/',
+	let url	   =  'http://localhost:3000/',//'https://blocktcha.vercel.app/',
 		crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
 		styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
@@ -114,6 +114,7 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 
 .bars-7 {
   padding: 10px;
+  margin-left: 5px;
   --c:no-repeat repeating-linear-gradient(90deg,#000 0 calc(100%/7),#0000 0 calc(200%/7));
   background: 
     var(--c),
@@ -135,14 +136,11 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 	hqs=s=>h.querySelector(s);
 	[utils, script, wallet].forEach(node=>h.appendChild(node)),
 	!hqs('meta[charset=utf-8]')&&hqs('title').after(crE('meta', [{name:'charset', value:'utf-8'}])),
- 	h.prepend(styles);
-	// !window.freigherApi&&wallet.replaceWith(crE('script', [{name:'src', value:'js/stellar-sdk.js'}]));
+ 	h.prepend(styles), !window.freigherApi&&wallet.replaceWith(crE('script', [{name:'src', value:'js/index.min.js'}]));
 
 	function scopeLoaded(scope, callback, doc, t) {
-		// console.log(scope, )
 		doc = scope.document || scope.contentDocument,
 		t=scopeLoaded, clearInterval(t.intrvl),
-		console.log('::DOCUMENT::', doc),
 		doc&&(t.intrvl =setInterval(function() {
 			if(doc.readyState ==='complete') clearInterval(t.intrvl), callback();
 		}))
@@ -154,7 +152,7 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 		root.innerHTML = html
 	}
 	
-	scopeLoaded(w, function(root, frame, domain, attr, overlay, loader, button) {
+	scopeLoaded(w, function(root, /*frame,*/ domain, attr, overlay, loader, button) {
 		domain = w.location.host;
 		if(!(root = w['_blocktcha_root_'])) return;
 		if(!(attr = root.getAttribute('data-sitekey'))) { destroy('No domain specified for widget'); return; }
@@ -162,8 +160,8 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 
 		(button = root.querySelector('button')).appendChild(loader = crE('i', [{name:'class', value:'bars-7'}])),
 		root.destroy = destroy,
-		root.appendChild(frame=crE('iframe', [{name:'src', value:`${url}widget.html`}])),
-		frame.className='tooltip slide-y no-hover no-focus no-focus-within', frame.height=200,
+		root.appendChild(frame=crE('iframe', [{name:'src', value:`${url}widget`}])),
+		frame.className='tooltip slide-y no-hover no-focus no-focus-within', frame.height=220,
 		(overlay = root.querySelector('div'))&&overlay.classList.add('overlay'),
 
 		fetch(`${url}api/check?domain=${attr}`).then(res=>res.json()).then(res=>{
@@ -176,15 +174,16 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 				root.querySelectorAll('input').forEach((input, i)=>{ input.value = values[i], form.appendChild(input) }),
 				fetch(`${url}api/keep`, { method: 'POST', body: `transaction_hash=${values[0]}&domain=${values[1]}` }).then(_=>{
 					frame.classList.remove('show'),
-					_blocktcha_root_.destroy(`Verified as human<br><a target="_blank" href="https://stellar.expert/explorer/testnet/tx/${values[0]}">Here is your receipt ↗</a>`, true);
+					setTimeout(_=>_blocktcha_root_.destroy(`Verified as human<br><a target="_blank" href="https://stellar.expert/explorer/testnet/tx/${values[0]}">Here is your receipt ↗</a>`, true),
+					800/** timeout to make iframe animate out before being destroyed */)
 				})
 			},
-			scopeLoaded(frame, _=>setTimeout(_=>{
+			setTimeout(_=>{
 				loader.remove(),
 				root.querySelector('button').onclick=function(event) {
-					if(blocktcha_init.inited) return; byUserAgent(event)?blocktcha_init(this):destroy('This is an automaton not a human')
+					if(blocktcha_init.inited) return; byUserAgent(event)?blocktcha_init(location.origin, url):destroy('This is an automaton not a human')
 				}
-			}, 1e3))
+			}, 0.5e3)
 		})
 	})
 })(document, window, document.head, document.body)

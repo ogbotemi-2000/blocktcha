@@ -1,11 +1,12 @@
 let { store, format } = require('../utils');
 
-module.exports = function(request, response) {
- let { transaction_hash, domain } = request.body;
+module.exports = function(request, response, body) {
+/** prepare request.body as an object */
+  if(typeof (body = request.body) === 'string') request.body={}, body.split('&').forEach(field=>request.body[(field = field.split('='))[0]] = field[1]);
+  let { transaction_hash, domain } = request.body;
+
  store.read(domain).then(data=>{
-    console.log('::KEEP::', data)
     (data.HITS ||=[]).push(transaction_hash),
-    console.log('::KEEP::HIT', data)
     store.write(data, function() {
         response.json({success:!0})
     }, domain)

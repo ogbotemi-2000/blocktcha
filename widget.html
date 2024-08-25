@@ -72,7 +72,7 @@
     </head>
     <body>
       <div class="text-right">
-        <button onclick="parent.postMessage({ source:'frame', close:!0 })" class="ripple relative border-gray-700 p-3 pr-5 border border-r-0 rounded-l-2xl"><i class="mr-3 fa fa-times"></i>close</button>
+        <button onclick="parent.postMessage({ source:'frame', close:!0 }, struct.domain||'*')" class="ripple relative border-gray-700 p-3 pr-5 border border-r-0 rounded-l-2xl"><i class="mr-3 fa fa-times"></i>close</button>
       </div>
       <!-- <div class="sm:absolute pb-5 cursor-move"><div class="h-2 bg-gray-400 rounded-full mx-24 sm:hidden"></div></div> -->
       <a href="https://blocktcha.vercel.app" target="_blank" class="py-1 hover:bg-gray-200 mb-1.5 text-center text-xs block" href="javascript:void(0)">↗ authentication by <span class="font-bold inline-block border-r border-b border-current p-1 rounded-br">blocktcha</span> ↗</a>
@@ -132,7 +132,7 @@
                   <p class="leading-6 tooltip -slide-y no-hover no-focus show text-gray-900 w-full"><i class="fa fa-exclamation-circle m-1 "></i>
                     transaction details with your public key - <code id="publicKey" class="text-black word-break border-b border-current"></code> as a sender will appear here if you've paid at a time no earlier than the timer above
                   </p>
-                  <div class="dump tooltip -slide-y p-3 bg-purple-50 no-hover no-focus absolute w-full"></div>
+                  <div class="dump tooltip -slide-y p-3 rounded-xl border border-gray-300 bg-purple-50 no-hover no-focus absolute w-full"></div>
                 </div>
                 <i class="absolute right-0 bottom-0 dots-bars-10 -mb-5"></i>
               </section>
@@ -165,7 +165,7 @@
               </p>
             </section>
             <div class="text-right pr-4 mt-7">
-                <button class="p-1 rounded-full relative" onclick="if(!byUserAgent(event)||this.textContent.trim()!=='retry address request') return; let t=this, i=t.querySelector('i'), s = i.nextElementSibling; notify.current===0&&(i.classList.replace('fa-undo', 'fa-wallet'), s.textContent=notify.notices[notify.current][1]); parent.postMessage({source: 'frame', requestAddress:!0})/*this.querySelector('span').textContent='opening wallet...'*/">
+                <button class="p-1 rounded-full relative" onclick="if(!byUserAgent(event)||this.textContent.trim()!=='retry address request') return; let t=this, i=t.querySelector('i'), s = i.nextElementSibling; notify.current===0&&(i.classList.replace('fa-undo', 'fa-wallet'), s.textContent=notify.notices[notify.current][1]); parent.postMessage({source: 'frame', requestAddress:!0}, struct.domain||'*')">
                     <div class="absolute border-r-0 border-2 border-current inset-0 right-1/2 rounded-l-full mr-0.5"></div>
                     <div class="absolute border-l-0 border-2 border-current inset-0 left-1/2 rounded-r-full ml-0.5"></div>
                     <div class="px-4 relative p-2 hover:bg-purple-700 hover:text-white duration-300 ease-out ripple rounded-inherit">
@@ -182,9 +182,6 @@
           window.addEventListener('DOMContentLoaded', _=>{
             window.scopeLoaded = !0,
             animations.addRippleAnimations(), canBlur=html.style.backdropFilter!==void 0
-            /*check for the existence of needed varaibles and send a signal to parent to "begin"
-            parent.postMessage({source: frame, begin:!0}, '*')
-            */
           })
 
           let slice = arr_like=>[].slice.call(arr_like);
@@ -200,7 +197,7 @@
           window.onmessage = function(ev, data, val, status) {
             /* will need to be authorized in a non-modifiable way */
             if((data=ev.data).source!=='parent') return;
-
+            struct.domain = data.domain,
             struct.tStamp ||= ([['pN', 'cL'], ['pN', 'pES', 'cL']].forEach(rel=>Abbr.to(window['app'], rel).toggle('show')), new Date())
             /*for when this widget is first called for validation*/
             beginWatch('GCRORZZNEUQJCN4TEE5SDNL7YTRMVEFOKS643CGLMGHTY4HMADYBJDFP'),
@@ -285,8 +282,8 @@
               }),
               dump.innerHTML = html, loader.classList.remove('dots-bars-10'), [dump, Abbr.to(dump, 'pES')].forEach((e, cls)=>{ (cls=e.classList).toggle('show'), cls.toggle('absolute') }),
               Abbr.to(loader, ['pN', 'nES', 'cL']).remove('show'),
-              struct.verified = !0, // kill signal to close the iframe after the verification data has been stored
-              parent.postMessage(struct)
+              struct.verified = !0, // kill signal to close the iframe after the verification data has been stored on the server
+              parent.postMessage(struct, struct.domain||'*')
             }
           }
           verifyPay(!0)/*initializes and creates <Fn>.write*/
