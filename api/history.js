@@ -11,7 +11,6 @@ module.exports = async function(request, response) {
 			response.end(JSON.stringify({ history:!0, stored }))
 		})
 	}).catch(err=>{
-		console.log("::ERROR::", err),
 		response.json({history:!0, error:"::NON-EXISTENT::", message:'The account ID provided is not found'})
 	})
 }
