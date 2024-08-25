@@ -4,6 +4,7 @@ server.js
 
 #Local Workspace files
 .soroban
+api/flush.js
 blockchain/target
 completion.sh
 *.txt

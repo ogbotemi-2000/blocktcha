@@ -12,7 +12,7 @@
 		data[mthd='requestAddress']&&requestAddress(stored[mthd], true),
 
 		data.close&&(widget.classList.remove('show'), blocktcha_init.inited=data.verified/**allow retries if unverified */),
-		data.verified&&(console.log("data", data), _blocktcha_root_.set([data.result.transaction_hash]))
+		data.verified&&_blocktcha_root_.set([data.result.transaction_hash])
 	}
 	/*the freighterApi.isConnected method sometimes resolves to an intial false hence why struct.retries is used to retry at most 3 times */
 	let begin=_=>setTimeout(_=>{
