@@ -1,11 +1,11 @@
 (function() {
-  let struct={retries:3, source:'parent'}, mthd, requestAddress, stored={}, widget, frameHs = [420, 400], target;
-	function init(domain, url, overlay) {
-		if(struct.sandboxed) return;// to let the UI flow resume if the widget is closed and opened 
+  let struct={retries:3, source:'parent'}, mthd, requestAddress, stored={}, widget, frameHs = [420, 400], target, overlay;
+	function init(domain, url) {
 		struct.domain = domain, target = url,
-		widget = _blocktcha_root_.querySelector('iframe'), init.inited||=!0,
+		widget = _blocktcha_root_.querySelector('iframe'),
 		widget.classList.add('show'), (overlay = _blocktcha_root_.querySelector('div'))&&overlay.classList.add('opacity-10'),
-		setTimeout(begin, 1000), setTimeout(_=>widget.height=frameHs[0], 1200)
+		// avoid redundant UI if the widget is closed and opened by calling begin after the iframe is sandboxed
+		!struct.sandboxed&&(setTimeout(begin, 1000), setTimeout(_=>widget.height=frameHs[0], 1200))
 	}
 	function sandbox() {
 		/** called when all interactions with the freighter wallet extension are over */
@@ -18,12 +18,13 @@
 		/* to retry requesting address from detected freighter wallet upon failure*/
 		data[mthd='requestAddress']&&requestAddress(stored[mthd], true),
 
-		data.close&&(widget.classList.remove('show'), blocktcha_init.inited=data.verified/**allow retries if unverified */),
-		data.verified&&_blocktcha_root_.set([data.result.transaction_hash])
+		data.close&&(widget.classList.remove('show'), overlay&&overlay.classList.remove('opacity-10')),
+		/**allow retries if unverified */
+		(blocktcha_init.inited=data.verified)&&_blocktcha_root_.set([data.result.transaction_hash])
 	}
 	/*the freighterApi.isConnected method sometimes resolves to an intial false hence why struct.retries is used to retry at most 3 times */
 	let begin=hasten=>setTimeout(_=>{
-		widget.contentWindow.postMessage({source:'parent', init:!0}, '*'),
+		widget.contentWindow.postMessage({source:'parent', domain:struct.domain, init:!0}, '*'),
 		window.freighterApi&&window.freighterApi[mthd='isConnected']().then(bool=>/*added a delay to make for gradual UX*/new Promise(resolve=>setTimeout(_=>resolve(bool), hasten?10:500)))
 		.then(bool=>((!bool&&--struct.retries)&&(begin(true), struct.retries)||sandbox(), struct[mthd] = bool)&&(widget.contentWindow.postMessage(struct, target), bool))
 		.then(bool=>{

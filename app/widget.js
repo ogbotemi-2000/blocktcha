@@ -1,5 +1,5 @@
 (function(d,w,h,b) {
-	let url	   =  'https://blocktcha.vercel.app/',
+	let url	   =  /*'http://localhost:3000/'*/'https://blocktcha.vercel.app/',
 		crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
 		styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
@@ -104,14 +104,13 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
   z-index: 1;
   transition: opacity 0.5s, transform 0.3s 0.12s ease, visibility 0s 0.06s;
 }
-.opacity-10 {
+.blocktcha_root > .opacity-10 {
   opacity: 0.1;
 }
-.overlay {
+.blocktcha_root > .overlay {
   background: rgb(245,158,11);
 	transition: 0.3s ease-out;
 }
-
 .bars-7 {
   padding: 10px;
   margin-left: 5px;
@@ -181,7 +180,8 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 			setTimeout(_=>{
 				loader.remove(),
 				root.querySelector('button').onclick=function(event) {
-					if(blocktcha_init.inited) return; byUserAgent(event)?blocktcha_init(location.origin, url):destroy('This is an automaton not a human')
+					if(blocktcha_init.inited) return;
+					byUserAgent(event)?blocktcha_init(location.origin, url):destroy('This is an automaton not a human')
 				}
 			}, 0.5e3)
 		})
