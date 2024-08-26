@@ -1,5 +1,5 @@
 (function(d,w,h,b) {
-	let url	   =  'https://blocktcha.vercel.app/',
+	let url	   =  'http://localhost:3000/',//'https://blocktcha.vercel.app/',
 		crE    = (tag, attrs, values)=>(tag = d.createElement(tag), values&&Object.keys(values).forEach(key=>tag[key]=values[key]), attrs.forEach(attr=>tag.setAttribute(attr.name, attr.value)), tag),
 	    wallet = crE('script', [{name:"src", value:"https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/2.0.0/index.min.js"}]),
 		styles = crE('style', [{name:'data-blocktcha_styles', value:''}], {
@@ -160,7 +160,7 @@ transition: opacity 0.2s, transform 0.2s ease, visibility 0s;
 
 		(button = root.querySelector('button')).appendChild(loader = crE('i', [{name:'class', value:'bars-7'}])),
 		root.destroy = destroy,
-		root.appendChild(frame=crE('iframe', [{name:'src', value:`${url}widget`}])),
+		root.appendChild(frame=crE('iframe', [{name:'src', value:`${url}widget.html`}])),
 		frame.className='tooltip slide-y no-hover no-focus no-focus-within', frame.height=220,
 		(overlay = root.querySelector('div'))&&overlay.classList.add('overlay'),
 
